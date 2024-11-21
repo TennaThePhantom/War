@@ -2,7 +2,7 @@
   "name": "war",
   "version": "1.0.0",
   "description": "War Card Game with multiple different themes",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "tailwindcss-build": "npx tailwindcss -i ./src/input.css -o ./main-code/tailwind.css --watch"
   },
