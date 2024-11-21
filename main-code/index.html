@@ -7,6 +7,7 @@
 	</head>
 	<link rel="stylesheet" href="tailwind.css" />
 	<link rel="stylesheet" href="booststrap.css" />
+	<link rel="stylesheet" href="animation.css" />
 	<link
 		rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
@@ -18,34 +19,44 @@
 		<div
 			class="tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-800"
 		>
-			<div class="tw-flex tw-items-center tw-space-x-4 tw-absolute tw-top-32">
+			<div class="tw-flex tw-items-center tw-space-x-4 tw-absolute tw-top-28">
 				<!-- Left Sword -->
 				<img
 					src="../icons/sword.png"
 					alt="Left Sword"
-					class="tw-w-16 tw-h-auto tw--translate-x-1"
+					class="tw-w-16 tw-h-auto tw-relative tw-left-16 animate__animated animate__fadeInBottomLeft"
 				/>
 				<img
-					src="../icons/sword.png"
-					alt="Left Sword"
-					class="tw-w-16 tw-h-auto tw-absolute tw-scale-x-[-1] tw--translate-x-1"
+					src="../icons/sword-flip.png"
+					alt="Left Sword2"
+					class="tw-w-16 tw-h-auto tw-relative tw-right-0 animate__animated animate__fadeInBottomRight"
 				/>
 
 				<!-- Title -->
-				<h1 class="tw-text-black tw-text-7xl tw-font-serif ">War</h1>
+				<h1 class="tw-text-black tw-text-7xl tw-font-serif">War</h1>
 				<!-- Right Sword -->
 				<img
 					src="../icons/sword.png"
 					alt="Right Sword"
-					class="tw-w-16 tw-h-auto tw--translate-x-1"
+					class="tw-w-16 tw-h-auto animate__animated animate__fadeInBottomLeft"
 				/>
 				<img
-					src="../icons/sword.png"
+					src="../icons/sword-flip.png"
 					alt="Right Sword"
-					class="tw-w-16 tw-h-auto tw-scale-x-[-1] tw-absolute tw-right-0 tw-translate-x-1"
+					class="tw-w-16 tw-h-auto tw-relative tw-right-16 animate__animated animate__fadeInBottomRight"
 				/>
 			</div>
+			<div class="tw-container tw-h-auto tw-w-auto tw-mx-auto tw-p-4 tw-relative tw-top-10 ">
+				<div class="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+					<button class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300">Start</button>
+					<button class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300">Settings</button>
+					<button class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300">How to Play</button>
+					<button class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300">Credits</button>
+				</div>
+			  </div>
+			  
 		</div>
+
 		<script src="script.js"></script>
 	</body>
 </html>
