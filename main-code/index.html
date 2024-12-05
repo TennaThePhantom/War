@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="tailwind.css" />
 	<link rel="stylesheet" href="booststrap.css" />
 	<link rel="stylesheet" href="animation.css" />
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="style.css" />
 	<link
 		rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
@@ -20,7 +20,9 @@
 		<div
 			class="tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-emerald-800"
 		>
-			<div class="tw-flex tw-items-center tw-space-x-4 tw-absolute tw-top-28">
+			<div
+				class="tw-flex tw-items-center tw-space-x-4 tw-absolute tw-top-28 main-screen-removable"
+			>
 				<!-- Left Sword -->
 				<img
 					src="../icons/sword.png"
@@ -48,20 +50,23 @@
 				/>
 			</div>
 			<div
-				class="tw-container tw-h-auto tw-w-auto tw-mx-auto tw-p-4 tw-relative tw-top-10"
+				class="tw-container tw-h-auto tw-w-auto tw-mx-auto tw-p-4 tw-relative tw-top-10 main-screen-removable"
 			>
 				<div class="tw-flex tw-flex-col tw-items-center tw-space-y-4">
 					<button
+						id="startButton"
 						class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300"
 					>
 						Start
 					</button>
 					<button
+						id="settingsButton"
 						class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300"
 					>
 						Settings
 					</button>
 					<button
+						id="helpButton"
 						class="tw-w-60 tw-h-20 tw-px-30 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded hover:tw-bg-blue-600 tw-transition tw-duration-300"
 					>
 						How to Play
@@ -73,19 +78,47 @@
 					</button>
 				</div>
 			</div>
-			<div class="tw-container tw-h-auto tw-w-auto tw-space-x-3 tw-absolute tw-top-2 tw-right-1">
-				<div class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500">
-					<i class="fa-solid fa-music fa-xl tw-cursor-pointer music-icon-text" style="color: #ffffff;"></i>
+			<div
+				class="tw-container tw-h-auto tw-w-auto tw-space-x-3 tw-absolute tw-top-2 tw-right-1"
+			>
+				<div
+					class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500"
+				>
+					<i
+						class="fa-solid fa-music fa-xl tw-cursor-pointer music-icon-text"
+						style="color: #ffffff"
+					></i>
 				</div>
-				<div class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500">
-					<i class="fa-solid fa-play fa-xl tw-cursor-pointer play-icon-text" style="color: #ffffff;"></i>
+				<div
+					class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500"
+				>
+					<i
+						class="fa-solid fa-play fa-xl tw-cursor-pointer play-icon-text"
+						style="color: #ffffff"
+					></i>
 				</div>
-				<div class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500">
-					<i class="fa-solid fa-forward fa-xl tw-cursor-pointer skip-icon-text" style="color: #ffffff;"></i>
+				<div
+					class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500"
+				>
+					<i
+						class="fa-solid fa-forward fa-xl tw-cursor-pointer skip-icon-text"
+						style="color: #ffffff"
+					></i>
 				</div>
-				
 			</div>
-			
+			<div
+				id="previously"
+				class="tw-hidden tw-container tw-h-auto tw-w-auto tw-absolute tw-top-2 tw-left-2 "
+			>
+				<div
+					class="tw-inline-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500"
+				>
+					<i
+						class="fa-solid fa-arrow-left fa-2xl tw-cursor-pointer"
+						style="color: #ffffff"
+					></i>
+				</div>
+			</div>
 		</div>
 
 		<script src="script.js"></script>
