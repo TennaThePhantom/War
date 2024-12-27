@@ -4,11 +4,13 @@
   "description": "War Card Game with multiple different themes",
   "main": "index.html",
   "scripts": {
-    "tailwindcss-build": "npx tailwindcss -i ./src/input.css -o ./main-code/tailwind.css --watch"
+    "tailwindcss-build": "npx tailwindcss -i ./src/input.css -o ./main-code/tailwind.css --watch",
+    "player-screen": "node ./main-code/player-screen.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
     "tailwindcss": "^3.4.15"
   },

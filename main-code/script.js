@@ -1,4 +1,14 @@
 // code for everything to work
+import {
+	createPlayerPageElements,
+	deletePlayerPageElements,
+} from "./player-screen.js";
+
+export const screenPage = {
+	mainPage: 1,
+	playersPage: 0,
+	body: "bodyContainer",
+};
 
 const startButton = document.getElementById("startButton");
 const settingsButton = document.getElementById("settingsButton");
@@ -20,21 +30,25 @@ function removableMainScreen() {
 			mainScreenElement.remove();
 		});
 		returnBackArrow.classList.toggle("tw-hidden");
+		createPlayerPageElements();
 	});
 }
 
+function returnArrowEventListenerHandler() {
+	removeMainScreenElements.forEach(({ element, parent, nextSibling }) => {
+		// restores main screen elements to original position
+		parent.insertBefore(element, nextSibling);
+	});
+	// Clear the array after restoring and hides arrow
+	removeMainScreenElements = [];
+	returnBackArrow.classList.toggle("tw-hidden");
+	deletePlayerPageElements();
+
+
+}
 // returns back to the main screen
 function remakeMainScreen() {
-	returnBackArrow.addEventListener("click", () => {
-		removeMainScreenElements.forEach(({element, parent, nextSibling}) => {
-			// restores main screen elements to original position
-			parent.insertBefore(element, nextSibling);
-		});
-        // Clear the array after restoring and hides arrow
-        removeMainScreenElements = [];
-        returnBackArrow.classList.toggle("tw-hidden");
-
-	});
+	returnBackArrow.addEventListener("click", returnArrowEventListenerHandler);	
 }
 
 removableMainScreen();
