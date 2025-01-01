@@ -1,4 +1,5 @@
 import { screenPage } from "./script.js";
+import {twoPlayerCardsSection} from "./cards-mode.js"
 
 // html objects for the functions for this file
 const playerScreenElements = {
@@ -11,10 +12,9 @@ const twCSS = {
 	textHeader: "tw-text-black tw-text-7xl tw-font-serif player-screen-removable",
 };
 export function createPlayerPageElements() {
-	screenPage.playersPage = 1;
-	screenPage.mainPage = 0;
+	screenPage.setActivePage("playersPage")
 	console.log(screenPage.playersPage, screenPage.mainPage);
-	const body = document.getElementById(screenPage.body);
+	const body = document.getElementById("bodyContainer");
 	const playersContainerSelector = document.createElement("div");
 	const playersHeader = document.createElement("h1");
 	const playersHeaderContainer = document.createElement("div");
@@ -65,9 +65,11 @@ export function createPlayerPageElements() {
 		threePlayerButton,
 		fourPlayerButton
 	);
+	
 	playersHeaderContainer.append(playersHeader);
 	body.append(playersHeaderContainer);
 	body.append(playersContainerSelector);
+	twoPlayerButton.addEventListener("click", twoPlayerButtonEventListerHandler)
 }
 
 // deletes the created elements
@@ -88,4 +90,8 @@ export function deletePlayerPageElements() {
 	} else {
 		console.log("No player elements to remove or invalid state.");
 	}
+}
+
+function twoPlayerButtonEventListerHandler(){
+	twoPlayerCardsSection();
 }

@@ -7,7 +7,19 @@ import {
 export const screenPage = {
 	mainPage: 1,
 	playersPage: 0,
-	body: "bodyContainer",
+	cardsAmountPage: 0,
+	setActivePage(page){
+		Object.keys(this).forEach((currentPage) => {
+			if(currentPage !== 'setActivePage'){
+				if(currentPage === page){
+					this[currentPage] = 1
+				}
+				else{
+					this[currentPage] = 0
+				}
+			}
+		}) 
+	}
 };
 
 const startButton = document.getElementById("startButton");
