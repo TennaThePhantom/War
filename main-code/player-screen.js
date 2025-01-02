@@ -12,8 +12,7 @@ const twCSS = {
 	textHeader: "tw-text-black tw-text-7xl tw-font-serif player-screen-removable",
 };
 export function createPlayerPageElements() {
-	screenPage.setActivePage("playersPage")
-	console.log(screenPage.playersPage, screenPage.mainPage);
+	console.log(screenPage.playersPage + "is ")
 	const body = document.getElementById("bodyContainer");
 	const playersContainerSelector = document.createElement("div");
 	const playersHeader = document.createElement("h1");
@@ -77,7 +76,8 @@ export function deletePlayerPageElements() {
 	const playersContainerSelector = document.getElementById(
 		"playerSelectorContainer"
 	);
-	if (screenPage.playersPage === 1 && playersContainerSelector) {
+	if (playersContainerSelector) {
+		console.log("hello")
 		const removable = document.querySelectorAll(".player-screen-removable");
 		removable.forEach((playerScreenElement) => {
 			playerScreenElements.removeElements.push({
@@ -93,5 +93,7 @@ export function deletePlayerPageElements() {
 }
 
 function twoPlayerButtonEventListerHandler(){
+
+	deletePlayerPageElements();
 	twoPlayerCardsSection();
 }

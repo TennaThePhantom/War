@@ -1,12 +1,16 @@
 import { screenPage } from "./script.js";
 
+const cardsScreenElements = {
+    removeElements: [],
+}
 const twCSS = {
 	ButtonsContainer:
 		"tw-flex tw-items-center tw-space-x-4 tw-absolute tw-top-28 cards-screen-removable",
 	textHeader: "tw-text-black tw-text-7xl tw-font-serif cards-screen-removable",
 	containerPosition:
-		"tw-container tw-h-auto tw-w-auto tw-mx-auto tw-p-4 tw-relative tw-top-10 tw-flex tw-flex-col tw-items-center tw-space-y-7 player-screen-removable",
+		"tw-container tw-h-auto tw-w-auto tw-mx-auto tw-p-4 tw-relative tw-top-10 tw-flex tw-flex-col tw-items-center tw-space-y-7 cards-screen-removable",
 };
+
 
 export function twoPlayerCardsSection() {
 	screenPage.setActivePage("cardsAmountPage");
@@ -37,7 +41,7 @@ export function twoPlayerCardsSection() {
 			"tw-rounded",
 			"hover:tw-bg-blue-600",
 			"tw-transition",
-			"tw-duration-300"
+			"tw-duration-300",
 		);
     })
     // buttons 
@@ -49,4 +53,18 @@ export function twoPlayerCardsSection() {
     cardsHeaderContainer.append(cardsAmountHeader)
     body.append(cardsHeaderContainer, cardsAmountContainer)
 
+}
+export function deleteCardsPageElement(){
+    const cardsAmountContainerID = document.getElementById("CardsAmount")
+    if(screenPage.cardsAmountPage === 1 && cardsAmountContainerID){
+        const removable = document.querySelectorAll(".cards-screen-removable")
+        removable.forEach((cardsElements) => {
+            cardsScreenElements.removeElements.push({
+                element: cardsElements,
+                parent: cardsElements.parentNode,
+                nextSibling: cardsElements.nextSibling,
+            })
+            cardsElements.remove()
+        })
+    }
 }
