@@ -1,4 +1,5 @@
 import { screenPage } from "./script.js";
+import {createGameScreen} from "./war.js"
 
 const cardsScreenElements = {
     removeElements: [],
@@ -10,6 +11,9 @@ const twCSS = {
 	containerPosition:
 		"tw-container tw-h-auto tw-w-auto tw-mx-auto tw-p-4 tw-relative tw-top-10 tw-flex tw-flex-col tw-items-center tw-space-y-7 cards-screen-removable",
 };
+export const cardGameChose = {
+    cardsStartingAmount: 0,
+}
 
 
 export function twoPlayerCardsSection() {
@@ -46,12 +50,14 @@ export function twoPlayerCardsSection() {
     })
     // buttons 
     _52CardsButton.textContent = "52 Cards"
+    _52CardsButton.id = "52Cards"
     _104cardsButton.textContent = "104 Cards"
     _208cardsButton.textContent = "208 Cards"
     _416cardsButton.textContent = "416 Cards"
     cardsAmountContainer.append(_52CardsButton, _104cardsButton, _208cardsButton, _416cardsButton)
     cardsHeaderContainer.append(cardsAmountHeader)
     body.append(cardsHeaderContainer, cardsAmountContainer)
+    _52CardsButton.addEventListener("click", WarCardGame52Cards)
 
 }
 export function deleteCardsPageElement(){
@@ -67,4 +73,11 @@ export function deleteCardsPageElement(){
             cardsElements.remove()
         })
     }
+}
+
+function WarCardGame52Cards(){
+    cardGameChose.cardsStartingAmount = 52;
+    deleteCardsPageElement();
+    screenPage.setActivePage("warGamePage")
+    createGameScreen()
 }

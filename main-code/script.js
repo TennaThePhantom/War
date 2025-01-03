@@ -10,6 +10,7 @@ export const screenPage = {
 	mainPage: 1, // main is always 1 because this is the first page you see first always
 	playersPage: 0,
 	cardsAmountPage: 0,
+	warGamePage: 0,
 	setActivePage(page) {
 		//sets whatever screen person is seeing to 1 others 0
 		Object.keys(this).forEach((currentPage) => {
@@ -62,6 +63,9 @@ function returnArrowEventListenerHandler() {
 		deleteCardsPageElement()
 		screenPage.setActivePage("playersPage");
 		createPlayerPageElements()
+	}
+	if(screenPage.warGamePage === 1){
+		console.log("h1")
 	}
 
 }
