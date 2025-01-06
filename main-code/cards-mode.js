@@ -76,7 +76,7 @@ export function deleteCardsPageElement(){
 }
 
 function WarCardGame52Cards(){
-    cardGameChose.cardsStartingAmount = 52;
+    cardGameChose.cardsStartingAmount = 54;
     deleteCardsPageElement();
     screenPage.setActivePage("warGamePage")
     createGameScreen()

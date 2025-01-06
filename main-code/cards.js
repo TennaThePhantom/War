@@ -345,6 +345,9 @@ export const cardsDeck = {
             },
         ];
     },
+    getBackOfCard: function (){
+        return "../cards/images/regular-cards/card_back_red.png"
+    },
     updateRandomIndex: function () {
 		this.randomIndex = Math.floor(Math.random() * this.cards.length);
 	},
@@ -353,6 +356,44 @@ export const cardsDeck = {
 		this.updateRandomIndex(); // Update the random index
 		return this.cards[this.randomIndex]; // Return the card at the random index
 	},
+    drawTwoDecks: function () {
+        let deck1 = [];
+        let deck2 = [];
+
+        // Draw 28 cards for each deck
+        for (let card = 0; card < 28; card++) {
+            let card1 = this.getRandomCard();
+            let card2 = this.getRandomCard();
+
+            // Ensure that the card is not repeated in the same deck
+            while (deck1.includes(card1) || deck2.includes(card1)) {
+                card1 = this.getRandomCard();
+            }
+            while (deck1.includes(card2) || deck2.includes(card2)) {
+                card2 = this.getRandomCard();
+            }
+
+            deck1.push(card1);
+            deck2.push(card2);
+        }
+
+        return { deck1, deck2 };
+    },
+    removeFirstCard: function () {
+        if (this.cards.length > 0) {
+            return this.cards.shift(); // Removes and returns the first card from the array
+        } else {
+            return null; // If the deck is empty, return null
+        }
+    },
+};
 
 
-}
+
+
+
+
+
+
+
+export * from "./cards.js";
