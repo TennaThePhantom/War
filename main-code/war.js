@@ -3,7 +3,16 @@ import {cardGameChose} from "./cards-mode.js"
 const gameCards = {
     deckOfCards: 0,
     playerOneDeck: 0,
-    playerTwoDeck: 0
+    playerTwoDeck: 0,
+    gameCardImage(cardSrc, leftOrRight){ // creates the cards
+        const imageElement = document.createElement("img");
+        imageElement.src = cardSrc;
+        imageElement.className = `${twCSS.cardImageSize} ${leftOrRight}`
+        return imageElement
+    },
+    
+
+
 }
 
 const twCSS = {
@@ -17,12 +26,12 @@ const twCSS = {
 
 export function createGameScreen(){
     gameCards.deckOfCards = cardGameChose.cardsStartingAmount
+    const srcImage = "../cards/images/regular-cards/3_of_clubs.png"
     // make this as a method for future images
-    const imageElement = document.createElement("img");
+    const imageElement = gameCards.gameCardImage(srcImage, twCSS.rightImage)
     const imageElement2 = document.createElement("img");
-    imageElement.src = "../cards/images/regular-cards/3_of_clubs.png"
+    imageElement.src = srcImage
     imageElement2.src = "../cards/images/regular-cards/5_of_clubs.png"
-    imageElement.className = `${twCSS.rightImage} ${twCSS.cardImageSize}`
     imageElement2.className = `${twCSS.leftImage} ${twCSS.cardImageSize}`;
 
     const battleContainer = document.createElement("div"); // container for players to place cards
