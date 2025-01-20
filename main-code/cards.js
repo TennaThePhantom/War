@@ -2,7 +2,84 @@
 
 export const cardsDeck = {
     cards: [],
+    player1Cards: [
+        {
+            suit: "diamonds",
+            value: 1,
+            name: "Ace of Diamonds",
+            src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
     
+        {
+            suit: "diamonds",
+            value: 1,
+            name: "Ace of Diamonds",
+            src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
+    
+        {
+            suit: "diamonds",
+            value: 1,
+            name: "Ace of Diamonds",
+            src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+    ], // testing 
+    player2Cards: [
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "diamonds",
+            value: 1,
+            name: "Ace of Diamonds",
+            src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
+        {
+            suit: "diamonds",
+            value: 1,
+            name: "Ace of Diamonds",
+            src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
+        {
+            suit: "diamonds",
+            value: 1,
+            name: "Ace of Diamonds",
+            src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
+    ], // testing
     randomCard: 0,
     getCards: function (){
         this.cards = [

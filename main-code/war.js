@@ -1,11 +1,26 @@
 import { cardGameChose } from "./cards-mode.js";
 import * as warCards from "./cards.js";
 
+/*
+future me (for now)
+fix the small bug issue when both players have different amount of cards
+make sure when the cards reach 0 it's gets the added cards then displays next card
+make a shuffle function for the added cards 
+add numbers to deck cards and add a small card pile to show cards won
+do the war cars function that does war 
+add comments 
+
+Quiley of life maybe make card highlight green if player wins if player loses highlight red
+
+*/
 const gameCards = {
 	playerOneDeck: [],
 	playerTwoDeck: [],
 	player1CardsWon: [],
-	playerTwoCardsWon: [],
+	player2CardsWon: [],
+	player1CardValue: 0,
+	player2CardValue: 0,
+	warCardBattle: [], // cards that are in the center
 	gameCardImage(cardSrc, leftOrRight) {
 		// creates the cards
 		const imageElement = document.createElement("img");
@@ -20,11 +35,23 @@ const gameCards = {
 			return null; // If the deck is empty, return null
 		}
 	},
+	resetWarCards (){
+		this.warCardBattle = []
+		return this.warCardBattle
+	},
+	resetPlayerOneCardsWon(){
+		this.player1CardsWon = []
+		return this.player1CardsWon
+	},
+	resetPlayerTwoCardsWon(){
+		this.player2CardsWon = []
+		return this.player2CardsWon
+	},
 };
 
 const twCSS = {
 	battleContainer:
-		"tw-flex tw-justify-center	tw-items-center	tw-h-auto tw-w-auto tw-bg-black tw-gap-24 tw-p-12",
+		"tw-flex tw-justify-center	tw-items-center	tw-h-auto tw-w-auto tw-gap-24 tw-p-12",
 	cardImageSize: "tw-h-52 tw-w-32",
 	leftImage: "tw-rotate-90",
 	rightImage: "tw-rotate-[-90deg]",
@@ -46,17 +73,17 @@ export function createGameScreen() {
 	player2Hand.src = warCards.cardsDeck.getBackOfCard();
 	player2Hand.className = `${twCSS.player2DeckPosition} ${twCSS.leftImage}`;
 
-	body.append(battleContainer, player1Hand, player2Hand);
 	dealCards();
 	player1Hand.addEventListener("click", cardHitButtonHandler);
 	// player1Hand.addEventListener("click", player2CardsHit )
+	body.append(battleContainer, player1Hand, player2Hand);
 
 }
 
 function dealCards() {
 	// starts the game
 	warCards.cardsDeck.getCards();
-	const { deck1, deck2 } = warCards.cardsDeck.drawTwoDecks(); // Destructure the result into deck1 and deck2
+	const { deck1, deck2 } = warCards.cardsDeck.drawTwoDecks(); // game cards into deck1 and deck2
 	gameCards.playerOneDeck = deck1;
 	gameCards.playerTwoDeck = deck2;
 
@@ -67,57 +94,91 @@ let pokerCardImagePlayerOne = null;
 let pokerCardImagePlayerTwo = null;
 
 function cardHitButtonHandler() {
+	player2CardsHit() // might change the position in the future but for now this is first because it allows the card to be position in the right order(player1 is right ai/player2 is left)
+
 	// Check if there is already an image in the container and remove it if necessary
 	if (pokerCardImagePlayerOne) {
-		console.log("this removed");
 		// Remove the previously appended card image
 		battleContainer.removeChild(pokerCardImagePlayerOne);
 		pokerCardImagePlayerOne = null; // Reset the image reference
 	}
 	// cards
-	if (gameCards.playerOneDeck.length === 0) {
-		console.log("out of cards ");
+	if (gameCards.playerOneDeck.length === 0) { // same thing as player 2 temporarily(adds the cards but when they are offset each player have different amounts of cards it doesn't work properly need to fix)
+		gameCards.playerOneDeck.push(...gameCards.player1CardsWon)
+		gameCards.resetPlayerOneCardsWon()
 	} else {
 		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
-		console.log(gameCards.playerOneDeck)
 		const cardSrc = "../" + randomCard.src;
 		pokerCardImagePlayerOne = gameCards.gameCardImage(cardSrc, twCSS.rightImage); // Create the new card image for player one
 		const cardValue = randomCard.value;
-		console.log(cardSrc);
-		console.log(randomCard);
-		console.log(cardValue);
+		gameCards.player1CardValue = cardValue
+		gameCards.warCardBattle.push(randomCard)
+		console.log(gameCards.warCardBattle)
 		battleContainer.append(pokerCardImagePlayerOne); // Add the new card image to the container
 	}
-	player2CardsHit()
-
+	whoWinsWar()
 }
 
 // adds the cards from player two to screen
 function player2CardsHit() {
 	if (pokerCardImagePlayerTwo) {
-		console.log("this removed");
 		// Remove the previously appended card image
 		battleContainer.removeChild(pokerCardImagePlayerTwo);
 		pokerCardImagePlayerTwo = null; // Reset the image reference
 	}
 	// cards
 	if (gameCards.playerTwoDeck.length === 0) {
-		console.log("out of cards2 ");
+		gameCards.playerTwoDeck.push(...gameCards.player2CardsWon)
+		gameCards.resetPlayerTwoCardsWon()
 	} else {
 		const randomCard = gameCards.removeFirstCard(gameCards.playerTwoDeck);
-		console.log(gameCards.playerTwoDeck)
 		const cardSrc = "../" + randomCard.src;
 		pokerCardImagePlayerTwo = gameCards.gameCardImage(cardSrc, twCSS.leftImage); // Create the new card image for player two
 		const cardValue = randomCard.value;
-		console.log(cardSrc);
-		console.log(randomCard);
-		console.log(cardValue);
+		gameCards.player2CardValue = cardValue
+		gameCards.warCardBattle.push(randomCard)
 		battleContainer.append(pokerCardImagePlayerTwo); // Add the new card image to the container
 	}
 }
 
-function whoWins() {}
+function whoWinsWar() { // working just need to do last condition
+	const cardValuePlayer1 = gameCards.player1CardValue 
+	const cardValuePlayer2 = gameCards.player2CardValue
 
-function startWar() {
+	if (cardValuePlayer1 === 1 && cardValuePlayer2 === 100) { // ace beats joker but ace loses against everything else
+		console.log("player 1 won");
+		gameCards.player1CardsWon.push(...gameCards.warCardBattle)
+		console.log(gameCards.player1CardsWon)
+		gameCards.resetWarCards()
+	} else if (cardValuePlayer2 === 1 && cardValuePlayer1 === 100) { 
+		console.log("player 2 has won");
+		gameCards.player2CardsWon.push(...gameCards.warCardBattle)
+		console.log(gameCards.player2CardsWon)
+		gameCards.resetWarCards()
+	} else if (cardValuePlayer1 > cardValuePlayer2) {
+		console.log("player 1 won");
+		gameCards.player1CardsWon.push(...gameCards.warCardBattle)
+		console.log(gameCards.player1CardsWon)
+		gameCards.resetWarCards()
+	} else if (cardValuePlayer2 > cardValuePlayer1) {
+		console.log("player 2 has won");
+		gameCards.player2CardsWon.push(...gameCards.warCardBattle)
+		console.log(gameCards.player2CardsWon)
+		gameCards.resetWarCards()
+	} else if (cardValuePlayer1 === cardValuePlayer2) {
+		console.log("WAR");
+		gameCards.resetWarCards()
+	}
+	
+	
+}
+
+function startWar() { 
+	/*
+	basically simulate 3 clicks or 4 whoever has the highest card wins 
+	if one player has 2 cards left it does like those certain situations wars
+	if war for ever reason decides to end in a draw like no more cards or no more cards won either
+	game ends in a draw and game reset this is like a 0.00000000001 percent happening honestly
+	*/
 	// if all players plays the same card value
 }
