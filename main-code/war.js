@@ -106,6 +106,16 @@ function cardHitButtonHandler() {
 	if (gameCards.playerOneDeck.length === 0) { // same thing as player 2 temporarily(adds the cards but when they are offset each player have different amounts of cards it doesn't work properly need to fix)
 		gameCards.playerOneDeck.push(...gameCards.player1CardsWon)
 		gameCards.resetPlayerOneCardsWon()
+		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
+		const cardSrc = "../" + randomCard.src;
+		pokerCardImagePlayerOne = gameCards.gameCardImage(cardSrc, twCSS.rightImage); // Create the new card image for player one
+		const cardValue = randomCard.value;
+		gameCards.player1CardValue = cardValue
+		gameCards.warCardBattle.push(randomCard)
+		console.log(gameCards.warCardBattle)
+		console.log(gameCards.playerOneDeck);
+
+		battleContainer.append(pokerCardImagePlayerOne); // Add the new card image to the container
 	} else {
 		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
 		const cardSrc = "../" + randomCard.src;
@@ -130,6 +140,14 @@ function player2CardsHit() {
 	if (gameCards.playerTwoDeck.length === 0) {
 		gameCards.playerTwoDeck.push(...gameCards.player2CardsWon)
 		gameCards.resetPlayerTwoCardsWon()
+		const randomCard = gameCards.removeFirstCard(gameCards.playerTwoDeck);
+		const cardSrc = "../" + randomCard.src;
+		pokerCardImagePlayerTwo = gameCards.gameCardImage(cardSrc, twCSS.leftImage); // Create the new card image for player two
+		const cardValue = randomCard.value;
+		gameCards.player2CardValue = cardValue
+		gameCards.warCardBattle.push(randomCard)
+		console.log(gameCards.playerOneDeck);
+		battleContainer.append(pokerCardImagePlayerTwo); // Add the new card image to the container
 	} else {
 		const randomCard = gameCards.removeFirstCard(gameCards.playerTwoDeck);
 		const cardSrc = "../" + randomCard.src;
