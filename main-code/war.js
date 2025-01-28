@@ -28,24 +28,24 @@ const gameCards = {
 		imageElement.className = `${twCSS.cardImageSize} ${leftOrRight}`;
 		return imageElement;
 	},
-	removeFirstCard (playerDeck) {
+	removeFirstCard(playerDeck) {
 		if (playerDeck.length > 0) {
 			return playerDeck.shift(); // Removes and returns the first card from the array
 		} else {
 			return null; // If the deck is empty, return null
 		}
 	},
-	resetWarCards (){
-		this.warCardBattle = []
-		return this.warCardBattle
+	resetWarCards() {
+		this.warCardBattle = [];
+		return this.warCardBattle;
 	},
-	resetPlayerOneCardsWon(){
-		this.player1CardsWon = []
-		return this.player1CardsWon
+	resetPlayerOneCardsWon() {
+		this.player1CardsWon = [];
+		return this.player1CardsWon;
 	},
-	resetPlayerTwoCardsWon(){
-		this.player2CardsWon = []
-		return this.player2CardsWon
+	resetPlayerTwoCardsWon() {
+		this.player2CardsWon = [];
+		return this.player2CardsWon;
 	},
 };
 
@@ -58,6 +58,10 @@ const twCSS = {
 	player1DeckPosition:
 		"tw-absolute tw-right-[27%] tw-h-52 tw-w-32 tw-rounded tw-cursor-pointer",
 	player2DeckPosition: "tw-absolute tw-left-[27%] tw-h-52 tw-w-32 tw-rounded",
+	player1NumberDisplay:
+		"playerNumberDisplay1 tw-absolute tw-right-[29.5%] tw-h-auto tw-w-auto tw-z-10 tw-font-black tw-text-4xl",
+	player2NumberDisplay:
+		"playerNumberDisplay2 tw-absolute tw-left-[29.5%] tw-h-auto tw-w-auto tw-z-10 tw-font-black tw-text-4xl",
 };
 const battleContainer = document.createElement("div"); // container for players to place cards
 const player1Hand = document.createElement("img"); // the deck of cards
@@ -77,7 +81,6 @@ export function createGameScreen() {
 	player1Hand.addEventListener("click", cardHitButtonHandler);
 	// player1Hand.addEventListener("click", player2CardsHit )
 	body.append(battleContainer, player1Hand, player2Hand);
-
 }
 
 function dealCards() {
@@ -89,13 +92,13 @@ function dealCards() {
 
 	console.log(gameCards.playerOneDeck);
 	console.log(gameCards.playerTwoDeck);
+	twoPlayerCardNumberDisplay();
 }
 let pokerCardImagePlayerOne = null;
 let pokerCardImagePlayerTwo = null;
 
 function cardHitButtonHandler() {
-	player2CardsHit() // might change the position in the future but for now this is first because it allows the card to be position in the right order(player1 is right ai/player2 is left)
-
+	player2CardsHit(); // might change the position in the future but for now this is first because it allows the card to be position in the right order(player1 is right ai/player2 is left)
 	// Check if there is already an image in the container and remove it if necessary
 	if (pokerCardImagePlayerOne) {
 		// Remove the previously appended card image
@@ -103,30 +106,38 @@ function cardHitButtonHandler() {
 		pokerCardImagePlayerOne = null; // Reset the image reference
 	}
 	// cards
-	if (gameCards.playerOneDeck.length === 0) { // same thing as player 2 temporarily(adds the cards but when they are offset each player have different amounts of cards it doesn't work properly need to fix)
-		gameCards.playerOneDeck.push(...gameCards.player1CardsWon)
-		gameCards.resetPlayerOneCardsWon()
+	if (gameCards.playerOneDeck.length === 0) {
+		// same thing as player 2 temporarily(adds the cards but when they are offset each player have different amounts of cards it doesn't work properly need to fix)
+		gameCards.playerOneDeck.push(...gameCards.player1CardsWon);
+		gameCards.resetPlayerOneCardsWon();
 		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
 		const cardSrc = "../" + randomCard.src;
-		pokerCardImagePlayerOne = gameCards.gameCardImage(cardSrc, twCSS.rightImage); // Create the new card image for player one
+		pokerCardImagePlayerOne = gameCards.gameCardImage(
+			cardSrc,
+			twCSS.rightImage
+		); // Create the new card image for player one
 		const cardValue = randomCard.value;
-		gameCards.player1CardValue = cardValue
-		gameCards.warCardBattle.push(randomCard)
-		console.log(gameCards.warCardBattle)
+		gameCards.player1CardValue = cardValue;
+		gameCards.warCardBattle.push(randomCard);
+		console.log(gameCards.warCardBattle);
 		console.log(gameCards.playerOneDeck);
 
 		battleContainer.append(pokerCardImagePlayerOne); // Add the new card image to the container
 	} else {
 		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
 		const cardSrc = "../" + randomCard.src;
-		pokerCardImagePlayerOne = gameCards.gameCardImage(cardSrc, twCSS.rightImage); // Create the new card image for player one
+		pokerCardImagePlayerOne = gameCards.gameCardImage(
+			cardSrc,
+			twCSS.rightImage
+		); // Create the new card image for player one
 		const cardValue = randomCard.value;
-		gameCards.player1CardValue = cardValue
-		gameCards.warCardBattle.push(randomCard)
-		console.log(gameCards.warCardBattle)
+		gameCards.player1CardValue = cardValue;
+		gameCards.warCardBattle.push(randomCard);
+		console.log(gameCards.warCardBattle);
 		battleContainer.append(pokerCardImagePlayerOne); // Add the new card image to the container
 	}
-	whoWinsWar()
+	whoWinsWar();
+	twoPlayerCardNumberDisplay();
 }
 
 // adds the cards from player two to screen
@@ -138,14 +149,14 @@ function player2CardsHit() {
 	}
 	// cards
 	if (gameCards.playerTwoDeck.length === 0) {
-		gameCards.playerTwoDeck.push(...gameCards.player2CardsWon)
-		gameCards.resetPlayerTwoCardsWon()
+		gameCards.playerTwoDeck.push(...gameCards.player2CardsWon);
+		gameCards.resetPlayerTwoCardsWon();
 		const randomCard = gameCards.removeFirstCard(gameCards.playerTwoDeck);
 		const cardSrc = "../" + randomCard.src;
 		pokerCardImagePlayerTwo = gameCards.gameCardImage(cardSrc, twCSS.leftImage); // Create the new card image for player two
 		const cardValue = randomCard.value;
-		gameCards.player2CardValue = cardValue
-		gameCards.warCardBattle.push(randomCard)
+		gameCards.player2CardValue = cardValue;
+		gameCards.warCardBattle.push(randomCard);
 		console.log(gameCards.playerOneDeck);
 		battleContainer.append(pokerCardImagePlayerTwo); // Add the new card image to the container
 	} else {
@@ -153,45 +164,45 @@ function player2CardsHit() {
 		const cardSrc = "../" + randomCard.src;
 		pokerCardImagePlayerTwo = gameCards.gameCardImage(cardSrc, twCSS.leftImage); // Create the new card image for player two
 		const cardValue = randomCard.value;
-		gameCards.player2CardValue = cardValue
-		gameCards.warCardBattle.push(randomCard)
+		gameCards.player2CardValue = cardValue;
+		gameCards.warCardBattle.push(randomCard);
 		battleContainer.append(pokerCardImagePlayerTwo); // Add the new card image to the container
 	}
 }
 
-function whoWinsWar() { // working just need to do last condition
-	const cardValuePlayer1 = gameCards.player1CardValue 
-	const cardValuePlayer2 = gameCards.player2CardValue
+function whoWinsWar() {
+	// working just need to do last condition
+	const cardValuePlayer1 = gameCards.player1CardValue;
+	const cardValuePlayer2 = gameCards.player2CardValue;
 
-	if (cardValuePlayer1 === 1 && cardValuePlayer2 === 100) { // ace beats joker but ace loses against everything else
+	if (cardValuePlayer1 === 1 && cardValuePlayer2 === 100) {
+		// ace beats joker but ace loses against everything else
 		console.log("player 1 won");
-		gameCards.player1CardsWon.push(...gameCards.warCardBattle)
-		console.log(gameCards.player1CardsWon)
-		gameCards.resetWarCards()
-	} else if (cardValuePlayer2 === 1 && cardValuePlayer1 === 100) { 
+		gameCards.player1CardsWon.push(...gameCards.warCardBattle);
+		console.log(gameCards.player1CardsWon);
+		gameCards.resetWarCards();
+	} else if (cardValuePlayer2 === 1 && cardValuePlayer1 === 100) {
 		console.log("player 2 has won");
-		gameCards.player2CardsWon.push(...gameCards.warCardBattle)
-		console.log(gameCards.player2CardsWon)
-		gameCards.resetWarCards()
+		gameCards.player2CardsWon.push(...gameCards.warCardBattle);
+		console.log(gameCards.player2CardsWon);
+		gameCards.resetWarCards();
 	} else if (cardValuePlayer1 > cardValuePlayer2) {
 		console.log("player 1 won");
-		gameCards.player1CardsWon.push(...gameCards.warCardBattle)
-		console.log(gameCards.player1CardsWon)
-		gameCards.resetWarCards()
+		gameCards.player1CardsWon.push(...gameCards.warCardBattle);
+		console.log(gameCards.player1CardsWon);
+		gameCards.resetWarCards();
 	} else if (cardValuePlayer2 > cardValuePlayer1) {
 		console.log("player 2 has won");
-		gameCards.player2CardsWon.push(...gameCards.warCardBattle)
-		console.log(gameCards.player2CardsWon)
-		gameCards.resetWarCards()
+		gameCards.player2CardsWon.push(...gameCards.warCardBattle);
+		console.log(gameCards.player2CardsWon);
+		gameCards.resetWarCards();
 	} else if (cardValuePlayer1 === cardValuePlayer2) {
 		console.log("WAR");
-		gameCards.resetWarCards()
+		gameCards.resetWarCards();
 	}
-	
-	
 }
 
-function startWar() { 
+function startWar() {
 	/*
 	basically simulate 3 clicks or 4 whoever has the highest card wins 
 	if one player has 2 cards left it does like those certain situations wars
@@ -199,4 +210,36 @@ function startWar() {
 	game ends in a draw and game reset this is like a 0.00000000001 percent happening honestly
 	*/
 	// if all players plays the same card value
+}
+
+function twoPlayerCardNumberDisplay() {
+	// display number center of deck
+	const existingNumberDisplayPlayer1 = document.querySelector(
+		".playerNumberDisplay1"
+	);
+	const existingNumberDisplayPlayer2 = document.querySelector(
+		".playerNumberDisplay2"
+	);
+
+	/*
+	if the number display hasn't been created yet create it
+	if it's already created just update the number value 
+	*/
+	if (!existingNumberDisplayPlayer1) {
+		const player1Number = document.createElement("div");
+		player1Number.textContent = gameCards.playerOneDeck.length;
+		player1Number.className = twCSS.player1NumberDisplay;
+		body.append(player1Number);
+	} else {
+		existingNumberDisplayPlayer1.textContent = gameCards.playerOneDeck.length;
+	}
+
+	if (!existingNumberDisplayPlayer2) {
+		const player2Number = document.createElement("div");
+		player2Number.textContent = gameCards.playerTwoDeck.length;
+		player2Number.className = twCSS.player2NumberDisplay;
+		body.append(player2Number);
+	} else {
+		existingNumberDisplayPlayer2.textContent = gameCards.playerTwoDeck.length;
+	}
 }

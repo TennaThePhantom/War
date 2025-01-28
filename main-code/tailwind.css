@@ -624,6 +624,10 @@ video {
   right: 27%;
 }
 
+.tw-right-\[29\.5\%\] {
+  right: 29.5%;
+}
+
 .tw-top-10 {
   top: 2.5rem;
 }
@@ -634,6 +638,14 @@ video {
 
 .tw-top-28 {
   top: 7rem;
+}
+
+.tw-left-\[29\.5\%\] {
+  left: 29.5%;
+}
+
+.tw-z-10 {
+  z-index: 10;
 }
 
 .tw-mx-auto {
@@ -786,9 +798,18 @@ video {
   font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+.tw-text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
 .tw-text-7xl {
   font-size: 4.5rem;
   line-height: 1;
+}
+
+.tw-font-black {
+  font-weight: 900;
 }
 
 .tw-text-black {
