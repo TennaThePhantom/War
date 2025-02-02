@@ -24,23 +24,54 @@ export const cardsDeck = {
             src: "cards/images/regular-cards/ace_of_diamonds.png",
         },
         {
-            suit: "joker",
-            value: 100,
-            name: "Red Joker",
-            src: "cards/images/regular-cards/red_joker.png",
+            suit: "clubs",
+            value: 2,
+            name: "2 of Clubs",
+            src: "cards/images/regular-cards/2_of_clubs.png",
         },
         {
-            suit: "joker",
-            value: 100,
-            name: "Red Joker",
-            src: "cards/images/regular-cards/red_joker.png",
+            suit: "diamonds",
+            value: 2,
+            name: "2 of Diamonds",
+            src: "cards/images/regular-cards/2_of_diamonds.png",
         },
         {
-            suit: "joker",
-            value: 100,
-            name: "Red Joker",
-            src: "cards/images/regular-cards/red_joker.png",
+            suit: "clubs",
+            value: 2,
+            name: "2 of Clubs",
+            src: "cards/images/regular-cards/2_of_clubs.png",
         },
+        {
+            suit: "diamonds",
+            value: 2,
+            name: "2 of Diamonds",
+            src: "cards/images/regular-cards/2_of_diamonds.png",
+        },
+        {
+            suit: "clubs",
+            value: 2,
+            name: "2 of Clubs",
+            src: "cards/images/regular-cards/2_of_clubs.png",
+        },
+        {
+            suit: "diamonds",
+            value: 2,
+            name: "2 of Diamonds",
+            src: "cards/images/regular-cards/2_of_diamonds.png",
+        },
+        {
+            suit: "clubs",
+            value: 2,
+            name: "2 of Clubs",
+            src: "cards/images/regular-cards/2_of_clubs.png",
+        },
+        {
+            suit: "diamonds",
+            value: 2,
+            name: "2 of Diamonds",
+            src: "cards/images/regular-cards/2_of_diamonds.png",
+        },
+        
     ], // testing 
     player2Cards: [
         {
@@ -78,6 +109,31 @@ export const cardsDeck = {
             value: 1,
             name: "Ace of Diamonds",
             src: "cards/images/regular-cards/ace_of_diamonds.png",
+        },
+
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
+        },
+        {
+            suit: "joker",
+            value: 100,
+            name: "Red Joker",
+            src: "cards/images/regular-cards/red_joker.png",
         },
     ], // testing
     randomCard: 0,

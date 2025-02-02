@@ -20,6 +20,7 @@ const gameCards = {
 	player2CardsWon: [],
 	player1CardValue: 0,
 	player2CardValue: 0,
+	player1resetWon: false,
 	warCardBattle: [], // cards that are in the center
 	gameCardImage(cardSrc, leftOrRight) {
 		// creates the cards
@@ -62,6 +63,8 @@ const twCSS = {
 		"playerNumberDisplay1 tw-absolute tw-right-[29.5%] tw-h-auto tw-w-auto tw-z-10 tw-font-black tw-text-4xl",
 	player2NumberDisplay:
 		"playerNumberDisplay2 tw-absolute tw-left-[29.5%] tw-h-auto tw-w-auto tw-z-10 tw-font-black tw-text-4xl",
+	player1PileDeckDisplay: "PlayerOneCardWinnings tw-absolute tw-right-[29.5%] tw-h-32 tw-w-24 tw--translate-y-36 tw-rounded tw-border-solid tw-border-2 tw-border-zinc-300",
+	cardCountDisplay: "CardWon tw-absolute tw-top-[28.8%] tw-right-[31.4%] tw-font-black tw-text-4xl tw-z-10 tw-h-auto tw-w-auto",
 };
 const battleContainer = document.createElement("div"); // container for players to place cards
 const player1Hand = document.createElement("img"); // the deck of cards
@@ -87,8 +90,8 @@ function dealCards() {
 	// starts the game
 	warCards.cardsDeck.getCards();
 	const { deck1, deck2 } = warCards.cardsDeck.drawTwoDecks(); // game cards into deck1 and deck2
-	gameCards.playerOneDeck = deck1;
-	gameCards.playerTwoDeck = deck2;
+	gameCards.playerOneDeck = warCards.cardsDeck.player1Cards;
+	gameCards.playerTwoDeck = warCards.cardsDeck.player2Cards;
 
 	console.log(gameCards.playerOneDeck);
 	console.log(gameCards.playerTwoDeck);
@@ -110,6 +113,7 @@ function cardHitButtonHandler() {
 		// same thing as player 2 temporarily(adds the cards but when they are offset each player have different amounts of cards it doesn't work properly need to fix)
 		gameCards.playerOneDeck.push(...gameCards.player1CardsWon);
 		gameCards.resetPlayerOneCardsWon();
+		gameCards.player1resetWon = true
 		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
 		const cardSrc = "../" + randomCard.src;
 		pokerCardImagePlayerOne = gameCards.gameCardImage(
@@ -138,6 +142,9 @@ function cardHitButtonHandler() {
 	}
 	whoWinsWar();
 	twoPlayerCardNumberDisplay();
+	cardsWonPileDisplay()
+	
+
 }
 
 // adds the cards from player two to screen
@@ -220,7 +227,6 @@ function twoPlayerCardNumberDisplay() {
 	const existingNumberDisplayPlayer2 = document.querySelector(
 		".playerNumberDisplay2"
 	);
-
 	/*
 	if the number display hasn't been created yet create it
 	if it's already created just update the number value 
@@ -232,6 +238,7 @@ function twoPlayerCardNumberDisplay() {
 		body.append(player1Number);
 	} else {
 		existingNumberDisplayPlayer1.textContent = gameCards.playerOneDeck.length;
+		
 	}
 
 	if (!existingNumberDisplayPlayer2) {
@@ -241,5 +248,90 @@ function twoPlayerCardNumberDisplay() {
 		body.append(player2Number);
 	} else {
 		existingNumberDisplayPlayer2.textContent = gameCards.playerTwoDeck.length;
+	}
+}
+
+
+function cardsWonPileDisplay() {
+    const cardCount = gameCards.player1CardsWon.length;
+
+    // Calculate how many cards to create (two more each time)
+    const cardsToCreate = Math.min(Math.floor(cardCount / 2) * 2, 10);
+
+    // Clear existing cards 
+    const existingCards = document.querySelectorAll(".PlayerOneCardWinnings");
+    existingCards.forEach(card => card.remove());
+
+    // Create the cards
+    for (let card = 0; card < cardsToCreate; card++) {
+        const player1Pile = document.createElement("img");
+        player1Pile.src = warCards.cardsDeck.getBackOfCard();
+        player1Pile.className = `${twCSS.player1PileDeckDisplay} ${twCSS.rightImage}`;
+
+        if (card === 0) {
+            // First card: Use its base transformation
+            player1Pile.style.transform = window.getComputedStyle(player1Pile).transform;
+        } else {
+            // Subsequent cards: Add 2px translation to the first card's transformation
+            const firstCard = document.querySelector(".PlayerOneCardWinnings");
+            const firstCardTransform = window.getComputedStyle(firstCard).transform;
+            const translation = `translate(${2 * card}px, ${2 * card}px)`;
+            player1Pile.style.transform = `${firstCardTransform} ${translation}`;
+        }
+        body.append(player1Pile);
+    }
+	 // Show or hide the text display based on whether there are cards in the pile
+	const cardCountDisplay = document.querySelector(".CardWon");
+	 if (cardCount > 0) { // update the card count 
+		console.log("CardCount is" + cardCount)
+		cardsWonTextDisplay();
+	} 
+	else { // if deck gets reset and player doesn't win remove the card display
+        if (cardCountDisplay) {
+            cardCountDisplay.remove();
+			gameCards.player1resetWon = false
+        }
+    }
+
+	// this checks if the player won after the rest it reset the display
+	if(cardCount === 2 && gameCards.player1resetWon === true){
+		console.log("HIIIIIII")
+		cardCountDisplay.remove();
+		cardsWonTextDisplay();
+		gameCards.player1resetWon = false
+	}
+
+}
+
+
+let lastTransformLength = 0; // Track the last length at which the transform was applied
+
+function cardsWonTextDisplay() {
+    const player1Count = gameCards.player1CardsWon.length;
+
+    let cardCountDisplay = document.querySelector(".CardWon");
+    if (!cardCountDisplay) {
+        cardCountDisplay = document.createElement("div");
+        cardCountDisplay.className = twCSS.cardCountDisplay;
+        body.append(cardCountDisplay);
+    }
+    cardCountDisplay.textContent = `${player1Count}`;
+
+
+    // Apply transform only if the length is even, between 2 and 10, and not already transformed
+    if (player1Count >= 2 && player1Count <= 10 && player1Count % 2 === 0 && player1Count !== lastTransformLength) {
+        // Preserve existing transform styles while adding translation
+        const existingTransform = cardCountDisplay.style.transform;
+        cardCountDisplay.style.transform = `${existingTransform} translate(3px, -3px)`.trim();
+        
+        // Update the last transformed length
+        lastTransformLength = player1Count;
+	} else if(gameCards.player1resetWon === true){ // if player won after reset make sure to add translate
+		console.log("UUUUUUUUUUUUUUUUUUUUUUUUUUu")
+		const existingTransform = cardCountDisplay.style.transform;
+        cardCountDisplay.style.transform = `${existingTransform} translate(3px, -3px)`.trim();
+        
+        // Update the last transformed length
+        lastTransformLength = player1Count;
 	}
 }
