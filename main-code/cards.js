@@ -136,6 +136,127 @@ export const cardsDeck = {
             src: "cards/images/regular-cards/red_joker.png",
         },
     ], // testing
+    warTestPlayer1: [
+        {
+            suit: "hearts",
+            value: 3,
+            name: "3 of Hearts",
+            src: "cards/images/regular-cards/3_of_hearts.png",
+        },
+        {
+            suit: "hearts",
+            value: 3,
+            name: "3 of Hearts",
+            src: "cards/images/regular-cards/3_of_hearts.png",
+        },
+        {
+            suit: "spades",
+            value: 3,
+            name: "3 of Spades",
+            src: "cards/images/regular-cards/3_of_spades.png",
+        },
+        {
+            suit: "clubs",
+            value: 3,
+            name: "3 of Clubs",
+            src: "cards/images/regular-cards/3_of_clubs.png",
+        },
+        {
+            suit: "hearts",
+            value: 4,
+            name: "4 of Hearts",
+            src: "cards/images/regular-cards/4_of_hearts.png",
+        },
+
+        {
+            suit: "diamonds",
+            value: 3,
+            name: "3 of Diamonds",
+            src: "cards/images/regular-cards/3_of_diamonds.png",
+        },
+    
+        {
+            suit: "hearts",
+            value: 4,
+            name: "4 of Hearts",
+            src: "cards/images/regular-cards/4_of_hearts.png",
+        },
+        {
+            suit: "spades",
+            value: 4,
+            name: "4 of Spades",
+            src: "cards/images/regular-cards/4_of_spades.png",
+        },
+        {
+            suit: "clubs",
+            value: 4,
+            name: "4 of Clubs",
+            src: "cards/images/regular-cards/4_of_clubs.png",
+        },
+        {
+            suit: "diamonds",
+            value: 4,
+            name: "4 of Diamonds",
+            src: "cards/images/regular-cards/4_of_diamonds.png",
+        },
+    ],
+    warTestPlayer2: [
+        {
+            suit: "hearts",
+            value: 3,
+            name: "3 of Hearts",
+            src: "cards/images/regular-cards/3_of_hearts.png",
+        },
+        {
+            suit: "hearts",
+            value: 3,
+            name: "3 of Hearts",
+            src: "cards/images/regular-cards/3_of_hearts.png",
+        },
+        {
+            suit: "spades",
+            value: 3,
+            name: "3 of Spades",
+            src: "cards/images/regular-cards/3_of_spades.png",
+        },
+        {
+            suit: "clubs",
+            value: 3,
+            name: "3 of Clubs",
+            src: "cards/images/regular-cards/3_of_clubs.png",
+        },
+        {
+            suit: "diamonds",
+            value: 3,
+            name: "3 of Diamonds",
+            src: "cards/images/regular-cards/3_of_diamonds.png",
+        },
+    
+        {
+            suit: "hearts",
+            value: 4,
+            name: "4 of Hearts",
+            src: "cards/images/regular-cards/4_of_hearts.png",
+        },
+        {
+            suit: "spades",
+            value: 4,
+            name: "4 of Spades",
+            src: "cards/images/regular-cards/4_of_spades.png",
+        },
+        {
+            suit: "clubs",
+            value: 4,
+            name: "4 of Clubs",
+            src: "cards/images/regular-cards/4_of_clubs.png",
+        },
+        {
+            suit: "diamonds",
+            value: 4,
+            name: "4 of Diamonds",
+            src: "cards/images/regular-cards/4_of_diamonds.png",
+        },
+    ],
     randomCard: 0,
     getCards: function (){
         this.cards = [
