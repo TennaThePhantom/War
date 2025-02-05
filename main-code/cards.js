@@ -167,6 +167,43 @@ export const cardsDeck = {
             name: "4 of Hearts",
             src: "cards/images/regular-cards/4_of_hearts.png",
         },
+        {
+            suit: "hearts",
+            value: 9,
+            name: "9 of Hearts",
+            src: "cards/images/regular-cards/9_of_hearts.png",
+        },
+        {
+            suit: "spades",
+            value: 9,
+            name: "9 of Spades",
+            src: "cards/images/regular-cards/9_of_spades.png",
+        },
+        {
+            suit: "clubs",
+            value: 9,
+            name: "9 of Clubs",
+            src: "cards/images/regular-cards/9_of_clubs.png",
+        },
+        {
+            suit: "diamonds",
+            value: 9,
+            name: "9 of Diamonds",
+            src: "cards/images/regular-cards/9_of_diamonds.png",
+        },
+    
+        {
+            suit: "hearts",
+            value: 10,
+            name: "10 of Hearts",
+            src: "cards/images/regular-cards/10_of_hearts.png",
+        },
+        {
+            suit: "spades",
+            value: 10,
+            name: "10 of Spades",
+            src: "cards/images/regular-cards/10_of_spades.png",
+        },
 
         {
             suit: "diamonds",

@@ -38,7 +38,7 @@ const gameCards = {
 		}
 	},
 	resetWarCards() {
-		if(startWar === false){
+		if(this.startWar === false){
 			this.warCardBattle = [];
 			return this.warCardBattle;
 		}
@@ -98,8 +98,8 @@ function dealCards() {
 	// starts the game
 	warCards.cardsDeck.getCards();
 	const { deck1, deck2 } = warCards.cardsDeck.drawTwoDecks(); // game cards into deck1 and deck2
-	gameCards.playerOneDeck = warCards.cardsDeck.warTestPlayer1;
-	gameCards.playerTwoDeck = warCards.cardsDeck.warTestPlayer2;
+	gameCards.playerOneDeck = deck1;
+	gameCards.playerTwoDeck = deck2;
 
 	console.log(gameCards.playerOneDeck);
 	console.log(gameCards.playerTwoDeck);
@@ -193,7 +193,7 @@ function whoWinsWar() {
 	// working just need to do last condition
 	const cardValuePlayer1 = gameCards.player1CardValue;
 	const cardValuePlayer2 = gameCards.player2CardValue;
-
+	console.log("Winner is being auunoce ")
 	if (cardValuePlayer1 === 1 && cardValuePlayer2 === 100) {
 		// ace beats joker but ace loses against everything else
 		console.log("player 1 won");
@@ -217,6 +217,7 @@ function whoWinsWar() {
 		gameCards.resetWarCards();
 	} else if (cardValuePlayer1 === cardValuePlayer2) {
 		console.log("WAR");
+		gameCards.startWar = true;
 		gameCards.resetWarCards();
 		startWar();
 	}
@@ -240,8 +241,8 @@ function startWar() {
 	); 
 	
 
+
 	if (gameCards.playerOneDeck.length >= 4 && gameCards.playerTwoDeck.length >= 4) {
-		gameCards.startWar = true;
 		console.log("START WAR");
 		console.log(gameCards.warCardBattle);
 	
@@ -250,45 +251,102 @@ function startWar() {
 			// Remove the cards in the middle
 			cardsInWar.forEach(card => card.remove());
 	
-			// Function to add and remove cards with a delay
-			const addAndRemoveCardsWithDelay = (playerDeck, player, imageClass, delay) => {
-				for (let i = 0; i < 4; i++) {
-					setTimeout(() => {
-						const card = gameCards.removeFirstCard(playerDeck);
-						twoPlayerCardNumberDisplay();
-						const isBackCard = i < 3; // First 3 cards are back cards, 4th is real
-						const cardSrc = isBackCard ? backImage : "../" + card.src;
+			// Function to add and remove cards with fade animations
+			const addAndRemoveCardsWithDelay = (playerDeck, player, imageClass, delay, isPlayer1) => {
+				let currentIndex = 0;
 	
-						// Create the card image
-						const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
+				const addNextCard = () => {
+					if (currentIndex >= 4) return; // Stop after 4 cards
+					const card = gameCards.removeFirstCard(playerDeck);
+					twoPlayerCardNumberDisplay();
+					const isBackCard = currentIndex < 3; // First 3 cards are back cards, 4th is real
+					const cardSrc = isBackCard ? backImage : "../" + card.src;
 	
-						// Add the card to the warBattleContainer
-						warBattleContainer.appendChild(cardImage);
+					// Create the card image
+					const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
 	
-						// Add the card to the warCardBattle array
-						gameCards.warCardBattle.push(card);
+					// Add fade-in animation to the card
+					cardImage.classList.add("animate__animated", "animate__fadeIn");
+					warBattleContainer.appendChild(cardImage);
 	
-						// Log the warCardBattle array after each card is added
-						console.log(`Added card to ${player} warCardBattle:`, card);
-						console.log("Current warCardBattle:", gameCards.warCardBattle);
+					// Add the card to the warCardBattle array
+					gameCards.warCardBattle.push(card);
 	
-						// If it's a back card, remove it after a delay
-						if (isBackCard) {
-							setTimeout(() => {
+					// Log the warCardBattle array after each card is added
+					console.log(`Added card to ${player} warCardBattle:`, card);
+					console.log("Current warCardBattle:", gameCards.warCardBattle);
+	
+					// If it's a back card, remove it after a delay with fade-out animation
+					if (isBackCard) {
+						setTimeout(() => {
+							// Add fade-out animation to the card
+							cardImage.classList.remove("animate__fadeIn");
+							cardImage.classList.add("animate__fadeOut");
+	
+							// Remove the card from the DOM after the fade-out animation completes
+							cardImage.addEventListener("animationend", () => {
 								cardImage.remove();
 								console.log(`Removed back card from ${player}`);
-							}, delay); // Delay before removing the back card
+	
+								// Add the next card after the fade-out completes
+								currentIndex++;
+								addNextCard();
+							}, { once: true });
+						}, delay); // Delay before starting the fade-out
+					} else {
+						// For the real card, don't remove it
+						currentIndex++;
+	
+						// If this is the last card (4th card), store the card value
+						if (currentIndex === 4) {
+							if (isPlayer1) {
+								gameCards.player1CardValue = card.value; // Store Player 1's card value
+								console.log(`Player 1's last card value: ${card.value}`);
+							} else {
+								gameCards.player2CardValue = card.value; // Store Player 2's card value
+								console.log(`Player 2's last card value: ${card.value}`);
+							}
+	
+							// Add the event listener to player1Hand for Player 1
+							if (isPlayer1) {
+								setTimeout(() => {
+									// gets the updated current cards being display
+									const currentCardsInWar = warBattleContainer.querySelectorAll('img');
+									currentCardsInWar.forEach(card => card.remove());
+									console.log("CARDS ARE REMOVED ")
+									pokerCardImagePlayerOne = null
+									pokerCardImagePlayerTwo = null	
+									console.log(gameCards.warCardBattle)
+									gameCards.startWar = false
+									whoWinsWar()
+									twoPlayerCardNumberDisplay();
+									cardsWarWonPileDisplay()
+									console.log(gameCards.warCardBattle)
+									console.log(gameCards.player1CardsWon)
+									player1Hand.addEventListener("click", cardHitButtonHandler);
+									console.log("Player 1's last card has been placed. Event listener added.");
+									console.log(pokerCardImagePlayerOne)	
+								}, 2000);					
+							}
 						}
-					}, delay * 2 * i); // Delay between adding each card
-				}
+	
+						// Add the next card
+						addNextCard();
+
+					}
+				};
+	
+				// Start adding cards
+				addNextCard();
 
 			};
 	
-			// Add and remove cards for Player 1 with a delay of 500ms between each step
-			addAndRemoveCardsWithDelay(gameCards.playerOneDeck, "Player 1", twCSS.rightImage, 500);
 	
 			// Add and remove cards for Player 2 with a delay of 500ms between each step
-			addAndRemoveCardsWithDelay(gameCards.playerTwoDeck, "Player 2", twCSS.leftImage, 500);
+			addAndRemoveCardsWithDelay(gameCards.playerTwoDeck, "Player 2", twCSS.leftImage, 500, false);
+
+			// Add and remove cards for Player 1 with a delay of 500.5ms between each step makes sure the card is added second
+			addAndRemoveCardsWithDelay(gameCards.playerOneDeck, "Player 1", twCSS.rightImage, 500.5, true);
 		}, 1500); // Delay before removing cards and starting the card-adding process
 	}
 
@@ -380,6 +438,7 @@ function cardsWonPileDisplay() {
 }
 
 
+
 let lastTransformLength = 0; // Track the last length at which the transform was applied
 
 function cardsWonTextDisplay() {
@@ -393,7 +452,6 @@ function cardsWonTextDisplay() {
     }
     cardCountDisplay.textContent = `${player1Count}`;
 
-
     // Apply transform only if the length is even, between 2 and 10, and not already transformed
     if (player1Count >= 2 && player1Count <= 10 && player1Count % 2 === 0 && player1Count !== lastTransformLength) {
         // Preserve existing transform styles while adding translation
@@ -405,8 +463,99 @@ function cardsWonTextDisplay() {
 	} else if(gameCards.player1resetWon === true){ // if player won after reset make sure to add translate
 		const existingTransform = cardCountDisplay.style.transform;
         cardCountDisplay.style.transform = `${existingTransform} translate(3px, -3px)`.trim();
-        
         // Update the last transformed length
         lastTransformLength = player1Count;
 	}
+
+}
+
+
+function cardsWarWonPileDisplay() { // when player wins in war
+    const cardCount = gameCards.player1CardsWon.length;
+
+    // Calculate how many cards to create (two more each time)
+    const cardsToCreate = Math.min(Math.floor(cardCount / 2) * 2, 10);
+
+    // Clear existing cards 
+    const existingCards = document.querySelectorAll(".PlayerOneCardWinnings");
+    existingCards.forEach(card => card.remove());
+
+    // Create the cards
+    for (let card = 0; card < cardsToCreate; card++) {
+        const player1Pile = document.createElement("img");
+        player1Pile.src = warCards.cardsDeck.getBackOfCard();
+        player1Pile.className = `${twCSS.player1PileDeckDisplay} ${twCSS.rightImage} PlayerOneCardWinnings`;
+
+        if (card === 0) {
+            // First card: Use its base transformation
+            player1Pile.style.transform = window.getComputedStyle(player1Pile).transform;
+        } else {
+            // Subsequent cards: Add 2px translation to the first card's transformation
+            const firstCard = document.querySelector(".PlayerOneCardWinnings");
+            const firstCardTransform = window.getComputedStyle(firstCard).transform;
+            const translation = `translate(${2 * card}px, ${2 * card}px)`;
+            player1Pile.style.transform = `${firstCardTransform} ${translation}`;
+        }
+        body.append(player1Pile);
+    }
+
+    // Show or hide the text display based on whether there are cards in the pile
+    const cardCountDisplay = document.querySelector(".CardWon");
+    if (cardCount > 0) { // update the card count 
+        console.log("CardCount is " + cardCount);
+        cardsWonTextDisplayWar();
+    } else { // if deck gets reset and player doesn't win remove the card display
+        if (cardCountDisplay) {
+            cardCountDisplay.remove();
+            gameCards.player1resetWon = false;
+        }
+    }
+
+    // this checks if the player won after the reset it reset the display
+    if (cardCount === 2 && gameCards.player1resetWon === true) {
+        if (cardCountDisplay) {
+            cardCountDisplay.remove();
+        }
+        cardsWonTextDisplayWar();
+        gameCards.player1resetWon = false;
+    }
+}
+
+function cardsWonTextDisplayWar() {
+	const player1Count = gameCards.player1CardsWon.length;
+
+    let cardCountDisplay = document.querySelector(".CardWon");
+    if (!cardCountDisplay) {
+        cardCountDisplay = document.createElement("div");
+        cardCountDisplay.className = twCSS.cardCountDisplay;
+        body.append(cardCountDisplay);
+    }
+    cardCountDisplay.textContent = `${player1Count}`;
+
+    // Check if the player has won an even number of cards between 2 and 10
+    if (player1Count >= 2 && player1Count <= 10 && player1Count % 2 === 0) {
+        // Calculate how many times to apply the translation
+        const translateCount = player1Count / 2;
+
+        // Apply the translation multiple times
+        let transformValue = "";
+        for (let i = 0; i < translateCount; i++) {
+            transformValue += " translate(3px, -3px)";
+        }
+
+        // Preserve existing transform styles while adding translation
+        const existingTransform = cardCountDisplay.style.transform;
+        cardCountDisplay.style.transform = `${existingTransform} ${transformValue}`.trim();
+
+        // Update the last transformed length
+        lastTransformLength = player1Count;
+    } else if (gameCards.player1resetWon === true) {
+        // If the player won after reset, apply the translation once
+        const existingTransform = cardCountDisplay.style.transform;
+        cardCountDisplay.style.transform = `${existingTransform} translate(3px, -3px)`.trim();
+
+        // Update the last transformed length
+        lastTransformLength = player1Count;
+    }
+
 }
