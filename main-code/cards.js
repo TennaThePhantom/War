@@ -138,6 +138,12 @@ export const cardsDeck = {
     ], // testing
     warTestPlayer1: [
         {
+            suit: "spades",
+            value: 9,
+            name: "9 of Spades",
+            src: "cards/images/regular-cards/9_of_spades.png",
+        },
+        {
             suit: "hearts",
             value: 3,
             name: "3 of Hearts",
@@ -238,6 +244,12 @@ export const cardsDeck = {
         },
     ],
     warTestPlayer2: [
+        {
+            suit: "diamonds",
+            value: 3,
+            name: "3 of Diamonds",
+            src: "cards/images/regular-cards/3_of_diamonds.png",
+        },
         {
             suit: "hearts",
             value: 3,
