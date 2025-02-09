@@ -596,6 +596,14 @@ video {
   position: relative;
 }
 
+.tw-bottom-\[28\.8\%\] {
+  bottom: 28.8%;
+}
+
+.tw-bottom-\[5\%\] {
+  bottom: 5%;
+}
+
 .tw-left-16 {
   left: 4rem;
 }
@@ -610,6 +618,10 @@ video {
 
 .tw-left-\[29\.5\%\] {
   left: 29.5%;
+}
+
+.tw-left-\[31\.4\%\] {
+  left: 31.4%;
 }
 
 .tw-right-0 {
