@@ -2,13 +2,6 @@ import { cardGameChose } from "./cards-mode.js";
 import * as warCards from "./cards.js";
 
 /*
-future me (for now)
-fix the small bug issue when both players have different amount of cards
-make sure when the cards reach 0 it's gets the added cards then displays next card
-make a shuffle function for the added cards 
-add numbers to deck cards and add a small card pile to show cards won
-do the war cars function that does war 
-add comments 
 
 Quiley of life maybe make card highlight green if player wins if player loses highlight red
 
