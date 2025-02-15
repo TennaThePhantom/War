@@ -135,82 +135,8 @@ export const cardsDeck = {
 			src: "cards/images/regular-cards/red_joker.png",
 		},
 	], // testing
-	warTestPlayer1: [
-		{
-			suit: "hearts",
-			value: 3,
-			name: "3 of Hearts",
-			src: "cards/images/regular-cards/3_of_hearts.png",
-		},
-		{
-			suit: "hearts",
-			value: 3,
-			name: "3 of Hearts",
-			src: "cards/images/regular-cards/3_of_hearts.png",
-		},
-		{
-			suit: "spades",
-			value: 3,
-			name: "3 of Spades",
-			src: "cards/images/regular-cards/3_of_spades.png",
-		},
-		{
-			suit: "clubs",
-			value: 3,
-			name: "3 of Clubs",
-			src: "cards/images/regular-cards/3_of_clubs.png",
-		},
-		{
-			suit: "hearts",
-			value: 4,
-			name: "4 of Hearts",
-			src: "cards/images/regular-cards/4_of_hearts.png",
-		},
-		{
-			suit: "hearts",
-			value: 9,
-			name: "9 of Hearts",
-			src: "cards/images/regular-cards/9_of_hearts.png",
-		},
-		{
-			suit: "spades",
-			value: 9,
-			name: "9 of Spades",
-			src: "cards/images/regular-cards/9_of_spades.png",
-		},
-		{
-			suit: "clubs",
-			value: 9,
-			name: "9 of Clubs",
-			src: "cards/images/regular-cards/9_of_clubs.png",
-		},
-		{
-			suit: "diamonds",
-			value: 9,
-			name: "9 of Diamonds",
-			src: "cards/images/regular-cards/9_of_diamonds.png",
-		},
-
-		{
-			suit: "hearts",
-			value: 10,
-			name: "10 of Hearts",
-			src: "cards/images/regular-cards/10_of_hearts.png",
-		},
-		{
-			suit: "spades",
-			value: 10,
-			name: "10 of Spades",
-			src: "cards/images/regular-cards/10_of_spades.png",
-		},
-
-		{
-			suit: "diamonds",
-			value: 3,
-			name: "3 of Diamonds",
-			src: "cards/images/regular-cards/3_of_diamonds.png",
-		},
-
+	warTestPlayer1LessThan3Cards: [
+		// 6 cards wins
 		{
 			suit: "hearts",
 			value: 4,
@@ -224,50 +150,193 @@ export const cardsDeck = {
 			src: "cards/images/regular-cards/4_of_spades.png",
 		},
 		{
-			suit: "clubs",
-			value: 4,
-			name: "4 of Clubs",
-			src: "cards/images/regular-cards/4_of_clubs.png",
-		},
-		{
-			suit: "diamonds",
-			value: 4,
-			name: "4 of Diamonds",
-			src: "cards/images/regular-cards/4_of_diamonds.png",
-		},
-	],
-	warTestPlayer2: [
-		{
 			suit: "hearts",
-			value: 3,
-			name: "3 of Hearts",
-			src: "cards/images/regular-cards/3_of_hearts.png",
-		},
-		{
-			suit: "hearts",
-			value: 3,
-			name: "3 of Hearts",
-			src: "cards/images/regular-cards/3_of_hearts.png",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
 		},
 		{
 			suit: "spades",
-			value: 3,
-			name: "3 of Spades",
-			src: "cards/images/regular-cards/3_of_spades.png",
+			value: 4,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 4,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		// 6 cards losses
+
+		{
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 2,
+			name: "2 of Spades",
+			src: "cards/images/regular-cards/2_of_spades.png",
 		},
 		{
 			suit: "clubs",
-			value: 3,
-			name: "3 of Clubs",
-			src: "cards/images/regular-cards/3_of_clubs.png",
+			value: 2,
+			name: "2 of Clubs",
+			src: "cards/images/regular-cards/2_of_clubs.png",
 		},
 		{
-			suit: "diamonds",
-			value: 3,
-			name: "3 of Diamonds",
-			src: "cards/images/regular-cards/3_of_diamonds.png",
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 2,
+			name: "2 of Spades",
+			src: "cards/images/regular-cards/2_of_spades.png",
+		},
+		{
+			suit: "clubs",
+			value: 2,
+			name: "2 of Clubs",
+			src: "cards/images/regular-cards/2_of_clubs.png",
 		},
 
+
+		// war
+		{
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+		{
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+		{
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+
+		
+	],
+	warTestPlayer2LessThan3Cards: [
+		// 6 cards losses
+		{
+			suit: "hearts",
+			value: 7,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 7,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 7,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 7,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 7,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 7,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+
+		// 6 card wins
+		
+		{
+			suit: "hearts",
+			value: 0,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 0,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 0,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 0,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 0,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 0,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		
+
+		// war
+
+		{
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+		{
+			suit: "hearts",
+			value: 2,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+		{
+			suit: "hearts",
+			value: 99,
+			name: "2 of Hearts",
+			src: "cards/images/regular-cards/2_of_hearts.png",
+		},
+	],
+
+	warTestP1: [
 		{
 			suit: "hearts",
 			value: 4,
@@ -281,18 +350,88 @@ export const cardsDeck = {
 			src: "cards/images/regular-cards/4_of_spades.png",
 		},
 		{
-			suit: "clubs",
+			suit: "hearts",
 			value: 4,
-			name: "4 of Clubs",
-			src: "cards/images/regular-cards/4_of_clubs.png",
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
 		},
 		{
-			suit: "diamonds",
+			suit: "spades",
 			value: 4,
-			name: "4 of Diamonds",
-			src: "cards/images/regular-cards/4_of_diamonds.png",
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 10,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
 		},
 	],
+	warTestP2: [
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 4,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 4,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 4,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+		{
+			suit: "spades",
+			value: 4,
+			name: "4 of Spades",
+			src: "cards/images/regular-cards/4_of_spades.png",
+		},
+		{
+			suit: "hearts",
+			value: 4,
+			name: "4 of Hearts",
+			src: "cards/images/regular-cards/4_of_hearts.png",
+		},
+	],
+
+	
 	randomCard: 0,
 	getCards: function () {
 		this.cards = [
