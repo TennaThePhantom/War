@@ -124,8 +124,8 @@ function dealCards() {
 	// starts the game
 	warCards.cardsDeck.getCards();
 	const { deck1, deck2 } = warCards.cardsDeck.drawTwoDecks(); // game cards into deck1 and deck2
-	gameCards.playerOneDeck = warCards.cardsDeck.warTestPlayer1LessThan3Cards;
-	gameCards.playerTwoDeck = warCards.cardsDeck.warTestPlayer2LessThan3Cards;
+	gameCards.playerOneDeck = deck1;
+	gameCards.playerTwoDeck = deck2;
 
 	console.log(gameCards.playerOneDeck);
 	console.log(gameCards.playerTwoDeck);
@@ -133,6 +133,8 @@ function dealCards() {
 }
 let pokerCardImagePlayerOne = null;
 let pokerCardImagePlayerTwo = null;
+
+// look at screen recording 3:50 and the rest for minor text bugs
 
 function cardHitButtonHandler() {
 	player2CardsHit(); // might change the position in the future but for now this is first because it allows the card to be position in the right order(player1 is right ai/player2 is left)
@@ -144,12 +146,8 @@ function cardHitButtonHandler() {
 	}
 	// cards
 	if (gameCards.playerOneDeck.length === 0) {
-		console.log("deck before shuffle")
-		console.log(gameCards.player1CardsWon)
-		// same thing as player 2 temporarily(adds the cards but when they are offset each player have different amounts of cards it doesn't work properly need to fix)
+		console.log("Deck did normal reset not war reset")
 		gameCards.shufflePlayer1WonDeck()
-		console.log("Deck after shuffle")
-		console.log(gameCards.player1CardsWon)
 		gameCards.playerOneDeck.push(...gameCards.player1CardsWon);
 		gameCards.resetPlayerOneCardsWon();
 		gameCards.player1resetWon = true;
@@ -162,9 +160,6 @@ function cardHitButtonHandler() {
 		const cardValue = randomCard.value;
 		gameCards.player1CardValue = cardValue;
 		gameCards.warCardBattle.push(randomCard);
-		console.log(gameCards.warCardBattle);
-		console.log(gameCards.playerOneDeck);
-
 		battleContainer.append(pokerCardImagePlayerOne); // Add the new card image to the container
 	} else {
 		const randomCard = gameCards.removeFirstCard(gameCards.playerOneDeck);
@@ -198,11 +193,11 @@ function player2CardsHit() {
 	}
 	// cards
 	if (gameCards.playerTwoDeck.length === 0) {
+		whoWinTheGame()
 		gameCards.shufflePlayer2WonDeck();
 		gameCards.playerTwoDeck.push(...gameCards.player2CardsWon);
 		gameCards.resetPlayerTwoCardsWon();
 		gameCards.player2resetWon = true;
-
 		const randomCard = gameCards.removeFirstCard(gameCards.playerTwoDeck);
 		const cardSrc = "../" + randomCard.src;
 		pokerCardImagePlayerTwo = gameCards.gameCardImage(cardSrc, twCSS.leftImage); // Create the new card image for player two
@@ -253,6 +248,13 @@ function whoWinsWar() {
 	} else if (cardValuePlayer1 === cardValuePlayer2) {
 		console.log("WAR");
 		gameCards.startWar = true;
+		// checks if the player deck been rested but right after war happen
+		if(gameCards.startWar === true && gameCards.player1resetWon === true){
+			gameCards.player1WarRest = true;
+		}
+		if(gameCards.startWar === true && gameCards.player2resetWon === true){ 
+			gameCards.player2WarRest = true;
+		}
 		gameCards.resetWarCards();
 		startWar();
 	}
@@ -269,11 +271,23 @@ function startWar() {
 		backImage,
 		twCSS.rightImage
 	);
+	/*
+	this makes sure if war happens and deck a war reset 
+	but one of the players doesn't win and war happens normally 
+	make sure warRest = false remove this it causes the text to act weird during war
+	*/ 
+	if(gameCards.playerOneDeck.length >= 4 &&
+		gameCards.playerTwoDeck.length >= 4){
+			gameCards.player1WarRest = false
+			gameCards.player2WarRest = false
+		}
+
 
 	// Check if either player has less than 3 cards
     if (gameCards.playerOneDeck.length <= 3 || gameCards.playerTwoDeck.length <= 3) {
         // Check if player 1 has less than 3 cards and has winning cards
         if (gameCards.playerOneDeck.length <= 3 && gameCards.player1CardsWon.length > 0) {
+			console.log("the reset happen is " + gameCards.player1WarRest)
             // Add winning cards to player 1's deck
 			gameCards.playerOneDeck.push(...gameCards.player1CardsWon);
 			gameCards.resetPlayerOneCardsWon();
@@ -288,12 +302,40 @@ function startWar() {
 			gameCards.resetPlayerTwoCardsWon();
 			gameCards.player2WarRest = true
         }
+
+		if(gameCards.playerOneDeck.length === 1 && gameCards.player1CardsWon.length === 0){
+			war1CardsTest()
+		}
+		else if(gameCards.playerOneDeck.length === 2 && gameCards.player1CardsWon.length === 0){
+			war2Cards();
+		}
+		else if(gameCards.playerOneDeck.length === 3 && gameCards.player1CardsWon.length === 0){
+			war3Cards();
+		}
+
+		else if(gameCards.playerTwoDeck.length === 1 && gameCards.player2CardsWon.length === 0 ){
+				console.log("UUUUUU")
+				war1CardsTest()
+		}
+		else if(gameCards.playerTwoDeck.length === 2 && gameCards.player2CardsWon.length === 0){
+				console.log("UUUUUU2")
+				war2Cards()
+			}
+		else if(gameCards.playerTwoDeck.length === 3 && gameCards.player2CardsWon.length === 0){
+				console.log("UUUUUU3")
+				war3Cards()
+		}
+		
     }
+
+
 
 	if (
 		gameCards.playerOneDeck.length >= 4 &&
 		gameCards.playerTwoDeck.length >= 4
 	) {
+		gameCards.player1resetWon = false;
+		gameCards.player2resetWon = false
 		console.log("START WAR");
 		console.log(gameCards.warCardBattle);
 
@@ -329,9 +371,6 @@ function startWar() {
 					// Add the card to the warCardBattle array
 					gameCards.warCardBattle.push(card);
 
-					// Log the warCardBattle array after each card is added
-					console.log(`Added card to ${player} warCardBattle:`, card);
-					console.log("Current warCardBattle:", gameCards.warCardBattle);
 
 					// If it's a back card, remove it after a delay with fade-out animation
 					if (isBackCard) {
@@ -345,8 +384,6 @@ function startWar() {
 								"animationend",
 								() => {
 									cardImage.remove();
-									console.log(`Removed back card from ${player}`);
-
 									// Add the next card after the fade-out completes
 									currentIndex++;
 									addNextCard();
@@ -362,10 +399,8 @@ function startWar() {
 						if (currentIndex === 4) {
 							if (isPlayer1) {
 								gameCards.player1CardValue = card.value; // Store Player 1's card value
-								console.log(`Player 1's last card value: ${card.value}`);
 							} else {
 								gameCards.player2CardValue = card.value; // Store Player 2's card value
-								console.log(`Player 2's last card value: ${card.value}`);
 							}
 
 							// Add the event listener to player1Hand for Player 1
@@ -373,7 +408,7 @@ function startWar() {
 								setTimeout(() => {
 									// gets the updated current cards being display
 									const currentCardsInWar =
-										warBattleContainer.querySelectorAll("img");
+									warBattleContainer.querySelectorAll("img");
 									currentCardsInWar.forEach((card) => card.remove());
 									console.log("CARDS ARE REMOVED ");
 									pokerCardImagePlayerOne = null;
@@ -384,13 +419,7 @@ function startWar() {
 									twoPlayerCardNumberDisplay();
 									cardsWarWonPileDisplayPlayer1();
 									cardsWarWonPileDisplayPlayer2();
-									console.log(gameCards.warCardBattle);
-									console.log(gameCards.player1CardsWon);
 									player1Hand.addEventListener("click", cardHitButtonHandler);
-									console.log(
-										"Player 1's last card has been placed. Event listener added."
-									);
-									console.log(pokerCardImagePlayerOne);
 								}, 2000);
 							}
 						}
@@ -490,7 +519,6 @@ function cardsWonPileDisplayPlayer1() {
 	const cardCountDisplay = document.querySelector(".CardWonPlayer1");
 	if (cardCount > 0) {
 		// update the card count
-		console.log("CardCount is" + cardCount);
 		cardsWonTextDisplayPlayer1();
 	} else {
 		// if deck gets reset and player doesn't win remove the card display
@@ -547,8 +575,9 @@ function cardsWonTextDisplayPlayer1() {
 
 function cardsWarWonPileDisplayPlayer1() {
 	// when player wins in war
-	console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIi");
 	const cardCount = gameCards.player1CardsWon.length;
+	console.log("player 1 war rest is " + gameCards.player1WarRest)
+
 
 	// Calculate how many cards to create (two more each time)
 	const cardsToCreate = Math.min(Math.floor(cardCount / 2) * 2, 10);
@@ -580,11 +609,13 @@ function cardsWarWonPileDisplayPlayer1() {
 	// Show or hide the text display based on whether there are cards in the pile
 	const cardCountDisplay = document.querySelector(".CardWonPlayer1");
 	if (cardCount > 0 && gameCards.player1WarRest === false) {
+		console.log("Text been Updated Player 1")
 		// update the card count
 		cardsWonTextDisplayWarPlayer1();
 	} else {
 		// if deck gets reset and player doesn't win remove the card display
 		if (cardCountDisplay) {
+			console.log("text for player 1 deck been removed first if")
 			cardCountDisplay.remove();
 			gameCards.player1WarRest = false;
 		}
@@ -593,7 +624,7 @@ function cardsWarWonPileDisplayPlayer1() {
 	// this checks if the player won after the reset it reset the display
 	if (cardCount >= 2 && gameCards.player1WarRest === true) {
 		if (cardCountDisplay) {
-			console.log("MMMMMMMMMMMMMMMMMMMMM")
+			console.log("text for player 1 deck been removed 2nd if")
 			cardCountDisplay.remove();
 		}
 		cardsWonTextDisplayWarPlayer1();
@@ -603,7 +634,7 @@ function cardsWarWonPileDisplayPlayer1() {
 
 function cardsWonTextDisplayWarPlayer1() {
 	const player1Count = gameCards.player1CardsWon.length;
-	console.log("Player 1 won war cards length is " + player1Count)
+	console.log("text updated War player 1 ")
 
 	// Select the existing element or create a new one if it doesn't exist
 	let cardCountDisplay = document.querySelector(".CardWonPlayer1");
@@ -641,6 +672,7 @@ function cardsWonTextDisplayWarPlayer1() {
 		// Update the last transformed length
 		lastTransformLengthPlayer1 = player1Count;
 	} if (gameCards.player1WarRest === true) {
+		console.log("Rest Happen")
 		lastTransformLengthPlayer1 = 0;
 		const maxTranslations = 5; // Maximum allowed translations
 		const totalTranslations = Math.min(player1Count / 2, maxTranslations); // Cap at 5
@@ -756,6 +788,7 @@ function cardsWonTextDisplayPlayer2() {
 function cardsWarWonPileDisplayPlayer2() {
 	// when player wins in war
 	const cardCount = gameCards.player2CardsWon.length;
+	console.log("player 2 war rest is " + gameCards.player2WarRest)
 
 	// Calculate how many cards to create (two more each time)
 	const cardsToCreate = Math.min(Math.floor(cardCount / 2) * 2, 10);
@@ -787,18 +820,22 @@ function cardsWarWonPileDisplayPlayer2() {
 	const cardCountDisplay = document.querySelector(".CardWonPlayer2");
 	if (cardCount > 0 && gameCards.player2WarRest === false) {
 		// update the card count
+		console.log("Text been Updated Player 2")
 		cardsWonTextDisplayWarPlayer2();
 	} else {
 		// if deck gets reset and player doesn't win remove the card display
 		if (cardCountDisplay) {
+			console.log("text for player 2 deck been removed first if")
 			cardCountDisplay.remove();
 			gameCards.player2WarRest = false;
 		}
+		
 	}
 
 	// this checks if the player won after the reset it reset the display
 	if (cardCount > 0 && gameCards.player2WarRest === true) {
 		if (cardCountDisplay) {
+			console.log("Text for player 2 been removed 2nd if ")
 			cardCountDisplay.remove();
 		}
 		cardsWonTextDisplayWarPlayer2();
@@ -807,6 +844,7 @@ function cardsWarWonPileDisplayPlayer2() {
 }
 
 function cardsWonTextDisplayWarPlayer2() {
+	console.log("text updated War player 2 ")
 	const player2Count = gameCards.player2CardsWon.length;
 
 	// Select the existing element or create a new one if it doesn't exist
@@ -873,3 +911,633 @@ function cardsWonTextDisplayWarPlayer2() {
 
 
 // below is war for playerDeck if it's 3 2 or 1 with no winning cards
+function war3Cards(){ // if player deck has 3 cards only during war
+	const backImage = warCards.cardsDeck.getBackOfCard();
+	const warBattleContainer = document.getElementById("War");
+	const cardsInWar = warBattleContainer.querySelectorAll("img");
+	pokerCardImagePlayerOne = gameCards.gameCardImage(
+		backImage,
+		twCSS.rightImage
+	);
+
+	if ((gameCards.playerOneDeck.length || gameCards.playerTwoDeck.length) === 3) {
+		console.log("START WAR 3 Card");
+		console.log(gameCards.warCardBattle);
+
+		// Remove the cards in the middle after a delay
+		setTimeout(() => {
+			// Remove the cards in the middle
+			cardsInWar.forEach((card) => card.remove());
+
+			// Function to add and remove cards with fade animations
+			const addAndRemoveCardsWithDelay = (
+				playerDeck,
+				player,
+				imageClass,
+				delay,
+				isPlayer1
+			) => {
+				let currentIndex = 0;
+
+				const addNextCard = () => {
+					if (currentIndex === 3) return; // Stop after 3 cards
+					const card = gameCards.removeFirstCard(playerDeck);
+					twoPlayerCardNumberDisplay();
+					const isBackCard = currentIndex < 2; // First 2 cards are back cards, 4th is real
+					const cardSrc = isBackCard ? backImage : "../" + card.src;
+
+					// Create the card image
+					const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
+
+					// Add fade-in animation to the card
+					cardImage.classList.add("animate__animated", "animate__fadeIn");
+					warBattleContainer.appendChild(cardImage);
+
+					// Add the card to the warCardBattle array
+					gameCards.warCardBattle.push(card);
+
+					// Log the warCardBattle array after each card is added
+					console.log(`Added card to ${player} warCardBattle:`, card);
+					console.log("Current warCardBattle:", gameCards.warCardBattle);
+
+					// If it's a back card, remove it after a delay with fade-out animation
+					if (isBackCard) {
+						setTimeout(() => {
+							// Add fade-out animation to the card
+							cardImage.classList.remove("animate__fadeIn");
+							cardImage.classList.add("animate__fadeOut");
+
+							// Remove the card from the DOM after the fade-out animation completes
+							cardImage.addEventListener(
+								"animationend",
+								() => {
+									cardImage.remove();
+									console.log(`Removed back card from ${player}`);
+
+									// Add the next card after the fade-out completes
+									currentIndex++;
+									addNextCard();
+								},
+								{ once: true }
+							);
+						}, delay); // Delay before starting the fade-out
+					} else {
+						// For the real card, don't remove it
+						currentIndex++;
+
+						// If this is the last card (3th card), store the card value
+						if (currentIndex === 3) {
+							if (isPlayer1) {
+								gameCards.player1CardValue = card.value; // Store Player 1's card value
+								console.log(`Player 1's last card value: ${card.value}`);
+							} else {
+								gameCards.player2CardValue = card.value; // Store Player 2's card value
+								console.log(`Player 2's last card value: ${card.value}`);
+							}
+
+							// Add the event listener to player1Hand for Player 1
+							if (isPlayer1) {
+								setTimeout(() => {
+									// gets the updated current cards being display
+									const currentCardsInWar =
+										warBattleContainer.querySelectorAll("img");
+									currentCardsInWar.forEach((card) => card.remove());
+									console.log("CARDS ARE REMOVED ");
+									pokerCardImagePlayerOne = null;
+									pokerCardImagePlayerTwo = null;
+									console.log(gameCards.warCardBattle);
+									gameCards.startWar = false;
+									whoWinsWar();
+									twoPlayerCardNumberDisplay();
+									cardsWarWonPileDisplayPlayer1();
+									cardsWarWonPileDisplayPlayer2();
+									console.log(gameCards.warCardBattle);
+									console.log(gameCards.player1CardsWon);
+									player1Hand.addEventListener("click", cardHitButtonHandler);
+									console.log(
+										"Player 1's last card has been placed. Event listener added."
+									);
+									console.log(pokerCardImagePlayerOne);
+								}, 2000);
+							}
+						}
+
+						// Add the next card
+						addNextCard();
+					}
+				};
+
+				// Start adding cards
+				addNextCard();
+			};
+
+			// Add and remove cards for Player 2 with a delay of 500ms between each step
+			addAndRemoveCardsWithDelay(
+				gameCards.playerTwoDeck,
+				"Player 2",
+				twCSS.leftImage,
+				500,
+				false
+			);
+
+			// Add and remove cards for Player 1 with a delay of 500.5ms between each step makes sure the card is added second
+			addAndRemoveCardsWithDelay(
+				gameCards.playerOneDeck,
+				"Player 1",
+				twCSS.rightImage,
+				500.5,
+				true
+			);
+		}, 1500); // Delay before removing cards and starting the card-adding process
+	}
+}
+
+
+function war2Cards(){
+	const backImage = warCards.cardsDeck.getBackOfCard();
+	const warBattleContainer = document.getElementById("War");
+	const cardsInWar = warBattleContainer.querySelectorAll("img");
+	pokerCardImagePlayerOne = gameCards.gameCardImage(
+		backImage,
+		twCSS.rightImage
+	);
+
+	if ((gameCards.playerOneDeck.length) === 2 || gameCards.playerTwoDeck.length === 2) {
+		console.log("START WAR 2 Card");
+		console.log(gameCards.warCardBattle);
+
+		// Remove the cards in the middle after a delay
+		setTimeout(() => {
+			// Remove the cards in the middle
+			cardsInWar.forEach((card) => card.remove());
+
+			// Function to add and remove cards with fade animations
+			const addAndRemoveCardsWithDelay = (
+				playerDeck,
+				player,
+				imageClass,
+				delay,
+				isPlayer1
+			) => {
+				let currentIndex = 0;
+
+				const addNextCard = () => {
+					if (currentIndex === 2) return; // Stop after 2 cards
+					const card = gameCards.removeFirstCard(playerDeck);
+					twoPlayerCardNumberDisplay();
+					const isBackCard = currentIndex < 1; // First 1 cards are back cards, 4th is real
+					const cardSrc = isBackCard ? backImage : "../" + card.src;
+
+					// Create the card image
+					const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
+
+					// Add fade-in animation to the card
+					cardImage.classList.add("animate__animated", "animate__fadeIn");
+					warBattleContainer.appendChild(cardImage);
+
+					// Add the card to the warCardBattle array
+					gameCards.warCardBattle.push(card);
+
+					// Log the warCardBattle array after each card is added
+					console.log(`Added card to ${player} warCardBattle:`, card);
+					console.log("Current warCardBattle:", gameCards.warCardBattle);
+
+					// If it's a back card, remove it after a delay with fade-out animation
+					if (isBackCard) {
+						setTimeout(() => {
+							// Add fade-out animation to the card
+							cardImage.classList.remove("animate__fadeIn");
+							cardImage.classList.add("animate__fadeOut");
+
+							// Remove the card from the DOM after the fade-out animation completes
+							cardImage.addEventListener(
+								"animationend",
+								() => {
+									cardImage.remove();
+									console.log(`Removed back card from ${player}`);
+
+									// Add the next card after the fade-out completes
+									currentIndex++;
+									addNextCard();
+								},
+								{ once: true }
+							);
+						}, delay); // Delay before starting the fade-out
+					} else {
+						// For the real card, don't remove it
+						currentIndex++;
+
+						// If this is the last card (2th card), store the card value
+						if (currentIndex === 2) {
+							if (isPlayer1) {
+								gameCards.player1CardValue = card.value; // Store Player 1's card value
+								console.log(`Player 1's last card value: ${card.value}`);
+							} else {
+								gameCards.player2CardValue = card.value; // Store Player 2's card value
+								console.log(`Player 2's last card value: ${card.value}`);
+							}
+
+							// Add the event listener to player1Hand for Player 1
+							if (isPlayer1) {
+								setTimeout(() => {
+									// gets the updated current cards being display
+									const currentCardsInWar =
+										warBattleContainer.querySelectorAll("img");
+									currentCardsInWar.forEach((card) => card.remove());
+									console.log("CARDS ARE REMOVED ");
+									pokerCardImagePlayerOne = null;
+									pokerCardImagePlayerTwo = null;
+									console.log(gameCards.warCardBattle);
+									gameCards.startWar = false;
+									whoWinsWar();
+									twoPlayerCardNumberDisplay();
+									cardsWarWonPileDisplayPlayer1();
+									cardsWarWonPileDisplayPlayer2();
+									console.log(gameCards.warCardBattle);
+									console.log(gameCards.player1CardsWon);
+									player1Hand.addEventListener("click", cardHitButtonHandler);
+									console.log(
+										"Player 1's last card has been placed. Event listener added."
+									);
+									console.log(pokerCardImagePlayerOne);
+								}, 2000);
+							}
+						}
+
+						// Add the next card
+						addNextCard();
+					}
+				};
+
+				// Start adding cards
+				addNextCard();
+			};
+
+			// Add and remove cards for Player 2 with a delay of 500ms between each step
+			addAndRemoveCardsWithDelay(
+				gameCards.playerTwoDeck,
+				"Player 2",
+				twCSS.leftImage,
+				500,
+				false
+			);
+
+			// Add and remove cards for Player 1 with a delay of 500.5ms between each step makes sure the card is added second
+			addAndRemoveCardsWithDelay(
+				gameCards.playerOneDeck,
+				"Player 1",
+				twCSS.rightImage,
+				500.5,
+				true
+			);
+		}, 1500); // Delay before removing cards and starting the card-adding process
+	}
+}
+
+function war1Cards(){ // if player has 1 card left 
+	const backImage = warCards.cardsDeck.getBackOfCard();
+	const warBattleContainer = document.getElementById("War");
+	const cardsInWar = warBattleContainer.querySelectorAll("img");
+	pokerCardImagePlayerOne = gameCards.gameCardImage(
+		backImage,
+		twCSS.rightImage
+	);
+
+	if ((gameCards.playerOneDeck.length || gameCards.playerTwoDeck.length) === 1) {
+		console.log("START WAR 1 Card");
+		console.log(gameCards.warCardBattle);
+
+		// Remove the cards in the middle after a delay
+		setTimeout(() => {
+			// Remove the cards in the middle
+			cardsInWar.forEach((card) => card.remove());
+
+			// Function to add and remove cards with fade animations
+			const addAndRemoveCardsWithDelay = (
+				playerDeck,
+				player,
+				imageClass,
+				delay,
+				isPlayer1
+			) => {
+				let currentIndex = 0;
+
+				const addNextCard = () => {
+					if (currentIndex === 1) return; // Stop after 1 card
+					const card = gameCards.removeFirstCard(playerDeck);
+					twoPlayerCardNumberDisplay();
+					const isBackCard = currentIndex < 0; // no back image
+					const cardSrc = isBackCard ? backImage : "../" + card.src;
+
+					// Create the card image
+					const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
+
+					// Add fade-in animation to the card
+					cardImage.classList.add("animate__animated", "animate__fadeIn");
+					warBattleContainer.appendChild(cardImage);
+
+					// Add the card to the warCardBattle array
+					gameCards.warCardBattle.push(card);
+
+					// Log the warCardBattle array after each card is added
+					console.log(`Added card to ${player} warCardBattle:`, card);
+					console.log("Current warCardBattle:", gameCards.warCardBattle);
+
+					// If it's a back card, remove it after a delay with fade-out animation
+					if (isBackCard) {
+						setTimeout(() => {
+							// Add fade-out animation to the card
+							cardImage.classList.remove("animate__fadeIn");
+							cardImage.classList.add("animate__fadeOut");
+
+							// Remove the card from the DOM after the fade-out animation completes
+							cardImage.addEventListener(
+								"animationend",
+								() => {
+									cardImage.remove();
+									console.log(`Removed back card from ${player}`);
+
+									// Add the next card after the fade-out completes
+									currentIndex++;
+									addNextCard();
+								},
+								{ once: true }
+							);
+						}, delay); // Delay before starting the fade-out
+					} else {
+						// For the real card, don't remove it
+						currentIndex++;
+
+						// store the card value
+						if (currentIndex === 1) {
+							if (isPlayer1) {
+								gameCards.player1CardValue = card.value; // Store Player 1's card value
+								console.log(`Player 1's last card value: ${card.value}`);
+							} else {
+								gameCards.player2CardValue = card.value; // Store Player 2's card value
+								console.log(`Player 2's last card value: ${card.value}`);
+							}
+
+							// Add the event listener to player1Hand for Player 1
+							if (isPlayer1) {
+								setTimeout(() => {
+									// gets the updated current cards being display
+									const currentCardsInWar =
+										warBattleContainer.querySelectorAll("img");
+									currentCardsInWar.forEach((card) => card.remove());
+									console.log("CARDS ARE REMOVED ");
+									pokerCardImagePlayerOne = null;
+									pokerCardImagePlayerTwo = null;
+									console.log(gameCards.warCardBattle);
+									gameCards.startWar = false;
+									whoWinsWar();
+									twoPlayerCardNumberDisplay();
+									cardsWarWonPileDisplayPlayer1();
+									cardsWarWonPileDisplayPlayer2();
+									console.log(gameCards.warCardBattle);
+									console.log(gameCards.player1CardsWon);
+									player1Hand.addEventListener("click", cardHitButtonHandler);
+									console.log(
+										"Player 1's last card has been placed. Event listener added."
+									);
+									console.log(pokerCardImagePlayerOne);
+								}, 2000);
+							}
+						}
+
+						// Add the next card
+						addNextCard();
+					}
+				};
+
+				// Start adding cards
+				addNextCard();
+			};
+
+			// Add and remove cards for Player 2 with a delay of 500ms between each step
+			addAndRemoveCardsWithDelay(
+				gameCards.playerTwoDeck,
+				"Player 2",
+				twCSS.leftImage,
+				500,
+				false
+			);
+
+			// Add and remove cards for Player 1 with a delay of 500.5ms between each step makes sure the card is added second
+			addAndRemoveCardsWithDelay(
+				gameCards.playerOneDeck,
+				"Player 1",
+				twCSS.rightImage,
+				500.5,
+				true
+			);
+		}, 1500); // Delay before removing cards and starting the card-adding process
+	}
+
+}
+
+function war1CardsTest() { // if player has 1 card left 
+    const backImage = warCards.cardsDeck.getBackOfCard();
+    const warBattleContainer = document.getElementById("War");
+    const cardsInWar = warBattleContainer.querySelectorAll("img");
+    pokerCardImagePlayerOne = gameCards.gameCardImage(
+        backImage,
+        twCSS.rightImage
+    );
+
+    if (gameCards.playerOneDeck.length === 1 || gameCards.playerTwoDeck.length === 1) {
+        console.log("START WAR 1 Card");
+        console.log(gameCards.warCardBattle);
+
+        // Remove the cards in the middle after a delay
+        setTimeout(() => {
+            // Remove the cards in the middle
+            cardsInWar.forEach((card) => card.remove());
+
+            // Function to add and remove cards with fade animations
+            const addAndRemoveCardsWithDelay = (
+                playerDeck,
+                player,
+                imageClass,
+                delay,
+                isPlayer1
+            ) => {
+                let currentIndex = 0;
+
+                const addNextCard = () => {
+                    if (currentIndex === 1) return; // Stop after 1 card
+                    const card = gameCards.removeFirstCard(playerDeck);
+                    twoPlayerCardNumberDisplay();
+                    const cardSrc = "../" + card.src; // Directly use the card's image source
+
+                    // Create the card image
+                    const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
+
+                    // Add fade-in animation to the card
+                    cardImage.classList.add("animate__animated", "animate__fadeIn");
+                    warBattleContainer.appendChild(cardImage);
+
+                    // Add the card to the warCardBattle array
+                    gameCards.warCardBattle.push(card);
+
+                    // Log the warCardBattle array after each card is added
+                    console.log(`Added card to ${player} warCardBattle:`, card);
+                    console.log("Current warCardBattle:", gameCards.warCardBattle);
+
+                    // For the real card, don't remove it
+                    currentIndex++;
+
+                    // Store the card value
+                    if (currentIndex === 1) {
+                        if (isPlayer1) {
+                            gameCards.player1CardValue = card.value; // Store Player 1's card value
+                            console.log(`Player 1's last card value: ${card.value}`);
+                        } else {
+                            gameCards.player2CardValue = card.value; // Store Player 2's card value
+                            console.log(`Player 2's last card value: ${card.value}`);
+                        }
+
+                        // Add the event listener to player1Hand for Player 1
+                        if (isPlayer1) {
+                            setTimeout(() => {
+                                // Gets the updated current cards being displayed
+                                const currentCardsInWar =
+                                    warBattleContainer.querySelectorAll("img");
+                                currentCardsInWar.forEach((card) => card.remove());
+                                console.log("CARDS ARE REMOVED ");
+                                pokerCardImagePlayerOne = null;
+                                pokerCardImagePlayerTwo = null;
+                                console.log(gameCards.warCardBattle);
+                                gameCards.startWar = false;
+                                whoWinsWar();
+                                twoPlayerCardNumberDisplay();
+                                cardsWarWonPileDisplayPlayer1();
+                                cardsWarWonPileDisplayPlayer2();
+                                console.log(gameCards.warCardBattle);
+                                console.log(gameCards.player1CardsWon);
+                                player1Hand.addEventListener("click", cardHitButtonHandler);
+                                console.log(
+                                    "Player 1's last card has been placed. Event listener added."
+                                );
+                                console.log(pokerCardImagePlayerOne);
+                            }, 2000);
+                        }
+                    }
+
+                    // Add the next card
+                    addNextCard();
+                };
+
+                // Start adding cards
+                addNextCard();
+            };
+
+            // Add and remove cards for Player 2 with a delay of 500ms between each step
+            addAndRemoveCardsWithDelay(
+                gameCards.playerTwoDeck,
+                "Player 2",
+                twCSS.leftImage,
+                500,
+                false
+            );
+
+            // Add and remove cards for Player 1 with a delay of 500.5ms between each step (ensures the card is added second)
+            addAndRemoveCardsWithDelay(
+                gameCards.playerOneDeck,
+                "Player 1",
+                twCSS.rightImage,
+                500.5,
+                true
+            );
+        }, 1500); // Delay before removing cards and starting the card-adding process
+    }
+}
+
+
+function whoWinTheGame(){
+	if(gameCards.player2CardsWon.length === 0 && gameCards.playerTwoDeck.length === 0){
+		createWinnerScreen()
+	}
+}
+
+// Function to create the "Player Won" screen
+function createWinnerScreen() {
+    // Create the overlay div (to block interactions)
+    const overlay = document.createElement('div');
+    overlay.className = "tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-90 tw-flex tw-justify-center tw-items-center tw-z-1000";
+    overlay.style.pointerEvents = "auto"; // Allow interactions within the overlay
+
+    // Disable pointer events for all other elements
+    document.querySelectorAll('body *').forEach(element => {
+        if (element !== overlay) {
+            element.style.pointerEvents = "none"; // Disable interactions
+        }
+    });
+
+    // Hide all text and other elements
+    document.querySelectorAll('body *').forEach(element => {
+        if (element !== overlay) {
+            element.style.visibility = "hidden"; // Hide all elements
+        }
+    });
+
+    // Create the winner screen container
+    const winnerScreen = document.createElement('div');
+    winnerScreen.className = "tw-bg-gray-800 tw-p-8 tw-rounded-lg tw-shadow-lg tw-text-center tw-max-w-md tw-w-full";
+    winnerScreen.style.pointerEvents = "auto"; // Allow interactions within the winner screen
+
+    // Add the two swords crossing (X)
+    const swordsDiv = document.createElement('div');
+    swordsDiv.className = "tw-relative tw-w-20 tw-h-20 tw-mx-auto tw-mb-6";
+
+    const sword1 = document.createElement('div');
+    sword1.innerHTML = `
+        <svg class="tw-w-full tw-h-full tw-absolute tw-top-0 tw-left-0 tw-transform tw-rotate-45" fill="none" stroke="#3b82f6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+        </svg>
+    `;
+
+    const sword2 = document.createElement('div');
+    sword2.innerHTML = `
+        <svg class="tw-w-full tw-h-full tw-absolute tw-top-0 tw-left-0 tw-transform -tw-rotate-45" fill="none" stroke="#ef4444" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+        </svg>
+    `;
+
+    swordsDiv.appendChild(sword1);
+    swordsDiv.appendChild(sword2);
+
+    // Add the congratulatory message
+    const heading = document.createElement('h1');
+    heading.className = "tw-text-3xl tw-font-bold tw-text-white tw-mb-4";
+    heading.textContent = 'Victory!';
+
+    const message = document.createElement('p');
+    message.className = "tw-text-gray-300 tw-mb-6";
+    message.textContent = 'You have emerged victorious. Well fought!';
+
+    // Add the "Play Again" button
+    const playAgainButton = document.createElement('button');
+    playAgainButton.className = "tw-bg-purple-500 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg hover:tw-bg-purple-600 tw-transition tw-duration-300";
+    playAgainButton.textContent = 'Play Again';
+    playAgainButton.addEventListener('click', () => {
+        // Restore pointer events and visibility for all elements
+        document.querySelectorAll('body *').forEach(element => {
+            element.style.pointerEvents = "auto";
+            element.style.visibility = "visible";
+        });
+        document.body.removeChild(overlay); // Remove the winner screen
+    });
+
+    // Append all elements to the winner screen
+    winnerScreen.appendChild(swordsDiv);
+    winnerScreen.appendChild(heading);
+    winnerScreen.appendChild(message);
+    winnerScreen.appendChild(playAgainButton);
+
+    // Append the winner screen to the overlay
+    overlay.appendChild(winnerScreen);
+
+    // Append the overlay to the body
+    document.body.appendChild(overlay);
+}
