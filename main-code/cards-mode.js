@@ -29,11 +29,11 @@ export function twoPlayerCardsSection() {
     cardsAmountContainer.id = "CardsAmount"
     cardsAmountContainer.className = twCSS.containerPosition
     
-    const _52CardsButton = document.createElement("button")
+    const _56CardsButton = document.createElement("button")
     const _104cardsButton = document.createElement("button")
     const _208cardsButton = document.createElement("button")
     const _416cardsButton = document.createElement("button")
-    const buttons = [_52CardsButton, _104cardsButton, _208cardsButton, _416cardsButton]
+    const buttons = [_56CardsButton, _104cardsButton, _208cardsButton, _416cardsButton]
     buttons.forEach((button) => {
         button.classList.add(
 			"tw-w-60",
@@ -49,15 +49,15 @@ export function twoPlayerCardsSection() {
 		);
     })
     // buttons 
-    _52CardsButton.textContent = "52 Cards"
-    _52CardsButton.id = "52Cards"
+    _56CardsButton.textContent = "56 Cards"
+    _56CardsButton.id = "56Cards"
     _104cardsButton.textContent = "104 Cards"
     _208cardsButton.textContent = "208 Cards"
     _416cardsButton.textContent = "416 Cards"
-    cardsAmountContainer.append(_52CardsButton, _104cardsButton, _208cardsButton, _416cardsButton)
+    cardsAmountContainer.append(_56CardsButton, _104cardsButton, _208cardsButton, _416cardsButton)
     cardsHeaderContainer.append(cardsAmountHeader)
     body.append(cardsHeaderContainer, cardsAmountContainer)
-    _52CardsButton.addEventListener("click", WarCardGame52Cards)
+    _56CardsButton.addEventListener("click", WarCardGame56Cards)
 
 }
 export function deleteCardsPageElement(){
@@ -75,8 +75,8 @@ export function deleteCardsPageElement(){
     }
 }
 
-function WarCardGame52Cards(){
-    cardGameChose.cardsStartingAmount = 54;
+function WarCardGame56Cards(){
+    cardGameChose.cardsStartingAmount = 56;
     deleteCardsPageElement();
     screenPage.setActivePage("warGamePage")
     createGameScreen()
