@@ -18,6 +18,9 @@ const gameCards = {
 	player2resetWon: false,
 	player1WarRest: false,
 	player2WarRest: false,
+	Player1InWarRest: false,
+	player2InWarRest: false,
+	warBattles: 0,
 	warCardBattle: [], // cards that are in the center
 	startWar: false,
 	gameCardImage(cardSrc, leftOrRight) {
@@ -137,6 +140,8 @@ let pokerCardImagePlayerTwo = null;
 // look at screen recording 3:50 and the rest for minor text bugs
 
 function cardHitButtonHandler() {
+	gameCards.Player1InWarRest = false
+	gameCards.player2InWarRest = false
 	player2CardsHit(); // might change the position in the future but for now this is first because it allows the card to be position in the right order(player1 is right ai/player2 is left)
 	// Check if there is already an image in the container and remove it if necessary
 	if (pokerCardImagePlayerOne) {
@@ -171,7 +176,6 @@ function cardHitButtonHandler() {
 		const cardValue = randomCard.value;
 		gameCards.player1CardValue = cardValue;
 		gameCards.warCardBattle.push(randomCard);
-		console.log(gameCards.warCardBattle);
 		battleContainer.append(pokerCardImagePlayerOne); // Add the new card image to the container
 	}
 	whoWinsWar();
@@ -221,30 +225,27 @@ function whoWinsWar() {
 	// working just need to do last condition
 	const cardValuePlayer1 = gameCards.player1CardValue;
 	const cardValuePlayer2 = gameCards.player2CardValue;
-	console.log("Winner is being auunoce ");
 	if (cardValuePlayer1 === 1 && cardValuePlayer2 === 100) {
 		// ace beats joker but ace loses against everything else
-		console.log("player 1 won");
 		gameCards.player1CardsWon.push(...gameCards.warCardBattle);
-		console.log("Player 1 cards won ")
-		console.log(gameCards.player1CardsWon);
 		gameCards.resetWarCards();
+		gameCards.warBattles = 0;
+		console.log(gameCards.warBattles)
 	} else if (cardValuePlayer2 === 1 && cardValuePlayer1 === 100) {
-		console.log("player 2 has won");
 		gameCards.player2CardsWon.push(...gameCards.warCardBattle);
-		console.log(gameCards.player2CardsWon);
 		gameCards.resetWarCards();
+		gameCards.warBattles = 0;
+		console.log(gameCards.warBattles)
 	} else if (cardValuePlayer1 > cardValuePlayer2) {
-		console.log("player 1 won");
 		gameCards.player1CardsWon.push(...gameCards.warCardBattle);
-		console.log("Player 1 cards won ")
-		console.log(gameCards.player1CardsWon);
 		gameCards.resetWarCards();
+		gameCards.warBattles = 0;
+		console.log(gameCards.warBattles)
 	} else if (cardValuePlayer2 > cardValuePlayer1) {
-		console.log("player 2 has won");
 		gameCards.player2CardsWon.push(...gameCards.warCardBattle);
-		console.log(gameCards.player2CardsWon);
 		gameCards.resetWarCards();
+		gameCards.warBattles = 0;
+		console.log(gameCards.warBattles)
 	} else if (cardValuePlayer1 === cardValuePlayer2) {
 		console.log("WAR");
 		gameCards.startWar = true;
@@ -257,6 +258,8 @@ function whoWinsWar() {
 		}
 		gameCards.resetWarCards();
 		startWar();
+		gameCards.warBattles += 1;
+		console.log(gameCards.warBattles)
 	}
 }
 
@@ -287,11 +290,13 @@ function startWar() {
     if (gameCards.playerOneDeck.length <= 3 || gameCards.playerTwoDeck.length <= 3) {
         // Check if player 1 has less than 3 cards and has winning cards
         if (gameCards.playerOneDeck.length <= 3 && gameCards.player1CardsWon.length > 0) {
-			console.log("the reset happen is " + gameCards.player1WarRest)
             // Add winning cards to player 1's deck
 			gameCards.playerOneDeck.push(...gameCards.player1CardsWon);
 			gameCards.resetPlayerOneCardsWon();
 			gameCards.player1WarRest = true
+			gameCards.Player1InWarRest = true
+			console.log("the reset happen is player 1 " + gameCards.player1WarRest)
+
 		}
 
 
@@ -301,6 +306,8 @@ function startWar() {
 			gameCards.playerTwoDeck.push(...gameCards.player2CardsWon);
 			gameCards.resetPlayerTwoCardsWon();
 			gameCards.player2WarRest = true
+			gameCards.player2InWarRest = true
+			console.log("the reset happen is player 2 " + gameCards.player2WarRest)
         }
 
 		if(gameCards.playerOneDeck.length === 1 && gameCards.player1CardsWon.length === 0){
@@ -671,8 +678,8 @@ function cardsWonTextDisplayWarPlayer1() {
 
 		// Update the last transformed length
 		lastTransformLengthPlayer1 = player1Count;
-	} if (gameCards.player1WarRest === true) {
-		console.log("Rest Happen")
+	} if (gameCards.player1WarRest === true || gameCards.Player1InWarRest === true) {
+		console.log("Player 1 Translations happen reset")
 		lastTransformLengthPlayer1 = 0;
 		const maxTranslations = 5; // Maximum allowed translations
 		const totalTranslations = Math.min(player1Count / 2, maxTranslations); // Cap at 5
@@ -882,7 +889,8 @@ function cardsWonTextDisplayWarPlayer2() {
 
 		// Update the last transformed length
 		lastTransformLengthPlayer2 = player2Count;
-	} if (gameCards.player2WarRest === true) {
+	} if (gameCards.player2WarRest === true || gameCards.player2InWarRest === true) {
+		console.log("Player 2 Translations happen reset")
 		lastTransformLengthPlayer2 = 0
 		// Calculate how many translations are needed (capped at 5)
 		const maxTranslations = 5; // Maximum allowed translations
