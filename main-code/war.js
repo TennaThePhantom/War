@@ -295,8 +295,6 @@ function startWar() {
 			gameCards.resetPlayerOneCardsWon();
 			gameCards.player1WarRest = true
 			gameCards.Player1InWarRest = true
-			console.log("the reset happen is player 1 " + gameCards.player1WarRest)
-
 		}
 
 
@@ -307,7 +305,6 @@ function startWar() {
 			gameCards.resetPlayerTwoCardsWon();
 			gameCards.player2WarRest = true
 			gameCards.player2InWarRest = true
-			console.log("the reset happen is player 2 " + gameCards.player2WarRest)
         }
 
 		if(gameCards.playerOneDeck.length === 1 && gameCards.player1CardsWon.length === 0){
@@ -928,7 +925,7 @@ function war3Cards(){ // if player deck has 3 cards only during war
 		twCSS.rightImage
 	);
 
-	if ((gameCards.playerOneDeck.length || gameCards.playerTwoDeck.length) === 3) {
+	if ((gameCards.playerOneDeck.length === 3) || (gameCards.playerTwoDeck.length === 3)) {
 		console.log("START WAR 3 Card");
 		console.log(gameCards.warCardBattle);
 
