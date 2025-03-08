@@ -1,11 +1,6 @@
 import { cardGameChose } from "./cards-mode.js";
 import * as warCards from "./cards.js";
 
-/*
-
-Quiley of life maybe make card highlight green if player wins if player loses highlight red
-
-*/
 
 const gameCards = {
 	playerOneDeck: [],
@@ -308,7 +303,7 @@ function startWar() {
         }
 
 		if(gameCards.playerOneDeck.length === 1 && gameCards.player1CardsWon.length === 0){
-			war1CardsTest()
+			war1Cards()
 		}
 		else if(gameCards.playerOneDeck.length === 2 && gameCards.player1CardsWon.length === 0){
 			war2Cards();
@@ -319,7 +314,7 @@ function startWar() {
 
 		else if(gameCards.playerTwoDeck.length === 1 && gameCards.player2CardsWon.length === 0 ){
 				console.log("UUUUUU")
-				war1CardsTest()
+				war1Cards()
 		}
 		else if(gameCards.playerTwoDeck.length === 2 && gameCards.player2CardsWon.length === 0){
 				console.log("UUUUUU2")
@@ -1199,149 +1194,8 @@ function war2Cards(){
 	}
 }
 
-function war1Cards(){ // if player has 1 card left 
-	const backImage = warCards.cardsDeck.getBackOfCard();
-	const warBattleContainer = document.getElementById("War");
-	const cardsInWar = warBattleContainer.querySelectorAll("img");
-	pokerCardImagePlayerOne = gameCards.gameCardImage(
-		backImage,
-		twCSS.rightImage
-	);
 
-	if ((gameCards.playerOneDeck.length || gameCards.playerTwoDeck.length) === 1) {
-		console.log("START WAR 1 Card");
-		console.log(gameCards.warCardBattle);
-
-		// Remove the cards in the middle after a delay
-		setTimeout(() => {
-			// Remove the cards in the middle
-			cardsInWar.forEach((card) => card.remove());
-
-			// Function to add and remove cards with fade animations
-			const addAndRemoveCardsWithDelay = (
-				playerDeck,
-				player,
-				imageClass,
-				delay,
-				isPlayer1
-			) => {
-				let currentIndex = 0;
-
-				const addNextCard = () => {
-					if (currentIndex === 1) return; // Stop after 1 card
-					const card = gameCards.removeFirstCard(playerDeck);
-					twoPlayerCardNumberDisplay();
-					const isBackCard = currentIndex < 0; // no back image
-					const cardSrc = isBackCard ? backImage : "../" + card.src;
-
-					// Create the card image
-					const cardImage = gameCards.gameCardImage(cardSrc, imageClass);
-
-					// Add fade-in animation to the card
-					cardImage.classList.add("animate__animated", "animate__fadeIn");
-					warBattleContainer.appendChild(cardImage);
-
-					// Add the card to the warCardBattle array
-					gameCards.warCardBattle.push(card);
-
-					// Log the warCardBattle array after each card is added
-					console.log(`Added card to ${player} warCardBattle:`, card);
-					console.log("Current warCardBattle:", gameCards.warCardBattle);
-
-					// If it's a back card, remove it after a delay with fade-out animation
-					if (isBackCard) {
-						setTimeout(() => {
-							// Add fade-out animation to the card
-							cardImage.classList.remove("animate__fadeIn");
-							cardImage.classList.add("animate__fadeOut");
-
-							// Remove the card from the DOM after the fade-out animation completes
-							cardImage.addEventListener(
-								"animationend",
-								() => {
-									cardImage.remove();
-									console.log(`Removed back card from ${player}`);
-
-									// Add the next card after the fade-out completes
-									currentIndex++;
-									addNextCard();
-								},
-								{ once: true }
-							);
-						}, delay); // Delay before starting the fade-out
-					} else {
-						// For the real card, don't remove it
-						currentIndex++;
-
-						// store the card value
-						if (currentIndex === 1) {
-							if (isPlayer1) {
-								gameCards.player1CardValue = card.value; // Store Player 1's card value
-								console.log(`Player 1's last card value: ${card.value}`);
-							} else {
-								gameCards.player2CardValue = card.value; // Store Player 2's card value
-								console.log(`Player 2's last card value: ${card.value}`);
-							}
-
-							// Add the event listener to player1Hand for Player 1
-							if (isPlayer1) {
-								setTimeout(() => {
-									// gets the updated current cards being display
-									const currentCardsInWar =
-										warBattleContainer.querySelectorAll("img");
-									currentCardsInWar.forEach((card) => card.remove());
-									console.log("CARDS ARE REMOVED ");
-									pokerCardImagePlayerOne = null;
-									pokerCardImagePlayerTwo = null;
-									console.log(gameCards.warCardBattle);
-									gameCards.startWar = false;
-									whoWinsWar();
-									twoPlayerCardNumberDisplay();
-									cardsWarWonPileDisplayPlayer1();
-									cardsWarWonPileDisplayPlayer2();
-									console.log(gameCards.warCardBattle);
-									console.log(gameCards.player1CardsWon);
-									player1Hand.addEventListener("click", cardHitButtonHandler);
-									console.log(
-										"Player 1's last card has been placed. Event listener added."
-									);
-									console.log(pokerCardImagePlayerOne);
-								}, 2000);
-							}
-						}
-
-						// Add the next card
-						addNextCard();
-					}
-				};
-
-				// Start adding cards
-				addNextCard();
-			};
-
-			// Add and remove cards for Player 2 with a delay of 500ms between each step
-			addAndRemoveCardsWithDelay(
-				gameCards.playerTwoDeck,
-				"Player 2",
-				twCSS.leftImage,
-				500,
-				false
-			);
-
-			// Add and remove cards for Player 1 with a delay of 500.5ms between each step makes sure the card is added second
-			addAndRemoveCardsWithDelay(
-				gameCards.playerOneDeck,
-				"Player 1",
-				twCSS.rightImage,
-				500.5,
-				true
-			);
-		}, 1500); // Delay before removing cards and starting the card-adding process
-	}
-
-}
-
-function war1CardsTest() { // if player has 1 card left 
+function war1Cards() { // if player has 1 card left 
     const backImage = warCards.cardsDeck.getBackOfCard();
     const warBattleContainer = document.getElementById("War");
     const cardsInWar = warBattleContainer.querySelectorAll("img");
