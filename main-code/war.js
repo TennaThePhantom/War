@@ -104,6 +104,7 @@ const body = document.getElementById("bodyContainer");
 export function createGameScreen() {
 	// make this as a method for future images
 
+
 	battleContainer.className = twCSS.battleContainer;
 	battleContainer.id = "War";
 	player1Hand.src = warCards.cardsDeck.getBackOfCard();
@@ -114,7 +115,6 @@ export function createGameScreen() {
 
 	dealCards();
 	player1Hand.addEventListener("click", cardHitButtonHandler);
-	// player1Hand.addEventListener("click", player2CardsHit )
 	body.append(battleContainer, player1Hand, player2Hand);
 }
 
@@ -122,8 +122,8 @@ function dealCards() {
 	// starts the game
 	warCards.cardsDeck.getCards();
 	const { deck1, deck2 } = warCards.cardsDeck.drawTwoDecks(); // game cards into deck1 and deck2
-	gameCards.playerOneDeck = deck1;
-	gameCards.playerTwoDeck = deck2;
+	gameCards.playerOneDeck = deck1
+	gameCards.playerTwoDeck = deck2
 
 	console.log(gameCards.playerOneDeck);
 	console.log(gameCards.playerTwoDeck);
@@ -192,7 +192,6 @@ function player2CardsHit() {
 	}
 	// cards
 	if (gameCards.playerTwoDeck.length === 0) {
-		whoWinTheGame()
 		gameCards.shufflePlayer2WonDeck();
 		gameCards.playerTwoDeck.push(...gameCards.player2CardsWon);
 		gameCards.resetPlayerTwoCardsWon();
@@ -226,21 +225,25 @@ function whoWinsWar() {
 		gameCards.resetWarCards();
 		gameCards.warBattles = 0;
 		console.log(gameCards.warBattles)
+		whoWinTheGame()
 	} else if (cardValuePlayer2 === 1 && cardValuePlayer1 === 100) {
 		gameCards.player2CardsWon.push(...gameCards.warCardBattle);
 		gameCards.resetWarCards();
 		gameCards.warBattles = 0;
 		console.log(gameCards.warBattles)
+		whoWinTheGame()
 	} else if (cardValuePlayer1 > cardValuePlayer2) {
 		gameCards.player1CardsWon.push(...gameCards.warCardBattle);
 		gameCards.resetWarCards();
 		gameCards.warBattles = 0;
 		console.log(gameCards.warBattles)
+		whoWinTheGame()
 	} else if (cardValuePlayer2 > cardValuePlayer1) {
 		gameCards.player2CardsWon.push(...gameCards.warCardBattle);
 		gameCards.resetWarCards();
 		gameCards.warBattles = 0;
 		console.log(gameCards.warBattles)
+		whoWinTheGame()
 	} else if (cardValuePlayer1 === cardValuePlayer2) {
 		console.log("WAR");
 		gameCards.startWar = true;
@@ -255,6 +258,7 @@ function whoWinsWar() {
 		startWar();
 		gameCards.warBattles += 1;
 		console.log(gameCards.warBattles)
+		whoWinTheGame()
 	}
 }
 
@@ -1314,13 +1318,18 @@ function war1Cards() { // if player has 1 card left
 
 
 function whoWinTheGame(){
+
 	if(gameCards.player2CardsWon.length === 0 && gameCards.playerTwoDeck.length === 0){
-		createWinnerScreen()
+		createWinnerScreen("Player 1 Is Victory")
+	}
+	else if(gameCards.player1CardsWon.length === 0 && gameCards.playerOneDeck.length === 0){
+		createWinnerScreen("Player 2 Is Victory")
 	}
 }
 
 // Function to create the "Player Won" screen
-function createWinnerScreen() {
+function createWinnerScreen(textWinner) {
+	console.log("HI")
     // Create the overlay div (to block interactions)
     const overlay = document.createElement('div');
     overlay.className = "tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-90 tw-flex tw-justify-center tw-items-center tw-z-1000";
@@ -1369,7 +1378,7 @@ function createWinnerScreen() {
     // Add the congratulatory message
     const heading = document.createElement('h1');
     heading.className = "tw-text-3xl tw-font-bold tw-text-white tw-mb-4";
-    heading.textContent = 'Victory!';
+    heading.textContent = `${textWinner}`;
 
     const message = document.createElement('p');
     message.className = "tw-text-gray-300 tw-mb-6";
@@ -1386,6 +1395,7 @@ function createWinnerScreen() {
             element.style.visibility = "visible";
         });
         document.body.removeChild(overlay); // Remove the winner screen
+			resetGame(); // Reset the game state and reinitialize the game
     });
 
     // Append all elements to the winner screen
@@ -1399,4 +1409,62 @@ function createWinnerScreen() {
 
     // Append the overlay to the body
     document.body.appendChild(overlay);
+}
+function resetGame() {
+    // Reset game state variables
+	pokerCardImagePlayerOne = null;
+	pokerCardImagePlayerTwo = null;
+    gameCards.playerOneDeck = [];
+    gameCards.playerTwoDeck = [];
+    gameCards.player1CardsWon = [];
+    gameCards.player2CardsWon = [];
+    gameCards.player1CardValue = 0;
+    gameCards.player2CardValue = 0;
+    gameCards.player1resetWon = false;
+    gameCards.player2resetWon = false;
+    gameCards.player1WarRest = false;
+    gameCards.player2WarRest = false;
+    gameCards.Player1InWarRest = false;
+    gameCards.player2InWarRest = false;
+    gameCards.warBattles = 0;
+    gameCards.warCardBattle = [];
+    gameCards.startWar = false;
+
+
+	const playerHand = document.querySelector("#warClicker");
+	const playerNumber1 = document.querySelector(".playerNumberDisplay1");
+	const playerNumber2 = document.querySelector(".playerNumberDisplay2");
+	const warBattleCards = document.querySelector("#War");
+	const player1PileWinnings = document.querySelectorAll(".PlayerOneCardWinnings");
+	const player2PileWinnings = document.querySelectorAll(".PlayerTwoCardWinnings");
+	const player1CardsTextWinnings = document.querySelector(".CardWonPlayer1");
+	const player2CardsTextWinnings = document.querySelector(".CardWonPlayer2");
+	
+	if (playerHand) {
+		playerHand.remove();
+		playerNumber1.remove();
+		playerNumber2.remove();
+		while (warBattleCards.firstChild) {
+			warBattleCards.removeChild(warBattleCards.firstChild);
+		}
+		warBattleCards.remove();
+	}
+	
+	if (player1PileWinnings.length > 0) {
+		player1PileWinnings.forEach(player1Pile => player1Pile.remove());
+		if (player1CardsTextWinnings) {
+			player1CardsTextWinnings.remove();
+		}
+	}
+	
+	if (player2PileWinnings.length > 0) {
+		player2PileWinnings.forEach(player2Pile => player2Pile.remove());
+		if (player2CardsTextWinnings) {
+			player2CardsTextWinnings.remove();
+		}
+	}
+	createGameScreen()
+    
+
+	// Reinitialize the game
 }
