@@ -75,71 +75,72 @@ function remakeMainScreen() {
 	startButton.addEventListener("click", handlesStartButton);
 	returnBackArrow.addEventListener("click", returnArrowEventListenerHandler);
 }
-
 function musicPlayer() {
     const musicFolder = "../music/"; // Path to your music folder
     const songs = ["audio1.mp3", "audio2.mp3", "audio3.mp3", "audio4.mp3"]; // Add your song files here
-    
+
     // Function to get a random song index
     function getRandomSongIndex() {
         return Math.floor(Math.random() * songs.length);
     }
-    
+
     // Create audio element but don't play yet
     let currentSongIndex = getRandomSongIndex();
     const audio = new Audio(musicFolder + songs[currentSongIndex]);
     let isPlaying = false;
     let hasStarted = false; // Track if music has been started
     let soundOFF = false;
-    
+
     // Control elements
     const playButton = document.getElementById("play-pause-music");
     const skipMusic = document.getElementById("skip-music");
     const turnOffMusic = document.getElementById("turn-on-off-music");
-    
+
     // Function to start music
     function startMusic() {
         if (!hasStarted) {
             audio.play();
             isPlaying = true;
             hasStarted = true;
-            
+
             // Remove the click event listener once music has started
             document.removeEventListener('click', startMusic);
             document.removeEventListener('touchstart', startMusic);
         }
     }
-    
+
     // Add click event listener to the entire document
     document.addEventListener('click', startMusic);
     document.addEventListener('touchstart', startMusic); // For mobile devices
-    
+
     // Play/Pause functionality
     playButton.addEventListener("click", (e) => {
-        // If this is the first interaction, startMusic will handle it
-        // Prevent this event from firing twice
+        // Ensure the music starts if it hasn't already
+        startMusic();
+
         if (hasStarted) {
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                playButton.classList.add("fa-pause")
-                playButton.classList.remove("fa-play")
+                playButton.classList.add("fa-pause");
+                playButton.classList.remove("fa-play");
                 playButton.style.setProperty("--hover-text", '"Play"'); // Update hover text
             } else {
                 audio.play();
                 isPlaying = true;
-                playButton.classList.remove("fa-pause")
-                playButton.classList.add("fa-play")
+                playButton.classList.remove("fa-pause");
+                playButton.classList.add("fa-play");
                 playButton.style.setProperty("--hover-text", '"Pause"'); // Update hover text
-
             }
         }
-        // Stop propagation to prevent the document click from triggering again
         e.stopPropagation();
     });
 
     // Skip to a random next song
     skipMusic.addEventListener("click", (e) => {
+        // Ensure the music starts if it hasn't already
+        startMusic();
+
         if (hasStarted) {
             audio.pause();
             currentSongIndex = getRandomSongIndex();
@@ -152,18 +153,20 @@ function musicPlayer() {
 
     // Turn off music
     turnOffMusic.addEventListener("click", (e) => {
+        // Ensure the music starts if it hasn't already
+        startMusic();
+
         if (hasStarted) {
-            if(soundOFF){
-                audio.volume = 1
-                soundOFF = false
+            if (soundOFF) {
+                audio.volume = 1;
+                soundOFF = false;
                 turnOffMusic.style.color = "#ffffff"; // Set icon color to white
                 turnOffMusic.style.setProperty("--hover-text", '"Turn Off Music"'); // Update hover text
-            }else{
-                audio.volume = 0
-                soundOFF = true
+            } else {
+                audio.volume = 0;
+                soundOFF = true;
                 turnOffMusic.style.color = "#ff0000"; // Set icon color to red
                 turnOffMusic.style.setProperty("--hover-text", '"Turn On Music"'); // Update hover text
-
             }
         }
         e.stopPropagation();
