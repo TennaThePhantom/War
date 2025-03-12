@@ -73,7 +73,6 @@ function returnArrowEventListenerHandler() {
 // returns back to the main screen
 function remakeMainScreen() {
 	startButton.addEventListener("click", handlesStartButton);
-    settingsButton.addEventListener("click", handleSettingsButton)
     returnBackArrow.addEventListener("click", returnArrowEventListenerHandler);
 }
 function musicPlayer() {
