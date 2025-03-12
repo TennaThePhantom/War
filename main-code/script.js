@@ -90,6 +90,7 @@ function musicPlayer() {
     const audio = new Audio(musicFolder + songs[currentSongIndex]);
     let isPlaying = false;
     let hasStarted = false; // Track if music has been started
+    let soundOFF = false;
     
     // Control elements
     const playButton = document.getElementById("play-pause-music");
@@ -145,9 +146,18 @@ function musicPlayer() {
     // Turn off music
     turnOffMusic.addEventListener("click", (e) => {
         if (hasStarted) {
-            audio.pause();
-            audio.currentTime = 0;
-            isPlaying = false;
+            if(soundOFF){
+                audio.volume = 1
+                soundOFF = false
+                turnOffMusic.style.color = "#ffffff"; // Set icon color to white
+                turnOffMusic.style.setProperty("--hover-text", '"Turn Off Music"'); // Update hover text
+            }else{
+                audio.volume = 0
+                soundOFF = true
+                turnOffMusic.style.color = "#ff0000"; // Set icon color to red
+                turnOffMusic.style.setProperty("--hover-text", '"Turn On Music"'); // Update hover text
+
+            }
         }
         e.stopPropagation();
     });

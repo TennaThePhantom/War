@@ -1,5 +1,5 @@
 .music-icon-text:hover::after {
-    content: "Turn Off Music";
+    content: var(--hover-text, "Turn Off Music"); /* Use CSS variable */
     height: auto;
     width: auto;
     padding: 5%;
