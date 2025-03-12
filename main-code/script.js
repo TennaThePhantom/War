@@ -5,12 +5,14 @@ import {
 } from "./player-screen.js";
 
 import { deleteCardsPageElement } from "./cards-mode.js";
+import { deleteSettingsPageElements, createSettingPageElements } from "./settings.js";
 
 export const screenPage = {
 	mainPage: 1, // main is always 1 because this is the first page you see first always
 	playersPage: 0,
 	cardsAmountPage: 0,
 	warGamePage: 0,
+    settingsPage: 0,
 	setActivePage(page) {
 		//sets whatever screen person is seeing to 1 others 0
 		Object.keys(this).forEach((currentPage) => {
@@ -47,6 +49,21 @@ function handlesStartButton() {
 	screenPage.setActivePage("playersPage");
 	createPlayerPageElements();
 }
+function handleSettingsButton(){
+    const removable = document.querySelectorAll(".main-screen-removable");
+	removable.forEach((mainScreenElement) => {
+		// gets the current element and saves it
+		removeMainScreenElements.push({
+			element: mainScreenElement,
+			parent: mainScreenElement.parentNode,
+			nextSibling: mainScreenElement.nextSibling, // Save the current position
+		});
+		mainScreenElement.remove();
+	});
+	returnBackArrow.classList.toggle("tw-hidden");
+	screenPage.setActivePage("settingsPage");
+	createSettingPageElements();
+}
 
 
 function returnArrowEventListenerHandler() {
@@ -60,6 +77,15 @@ function returnArrowEventListenerHandler() {
 		screenPage.setActivePage("mainPage");
 		deletePlayerPageElements();
 	}
+    if(screenPage.settingsPage === 1){
+        removeMainScreenElements.forEach(({ element, parent, nextSibling }) => {
+			parent.insertBefore(element, nextSibling);
+		});
+		removeMainScreenElements = []; // Clear saved elements
+		returnBackArrow.classList.add("tw-hidden"); // Hide back arrow
+		screenPage.setActivePage("mainPage");
+		deleteSettingsPageElements();
+    }
 	if (screenPage.cardsAmountPage === 1) {
 		deleteCardsPageElement()
 		screenPage.setActivePage("playersPage");
@@ -73,7 +99,8 @@ function returnArrowEventListenerHandler() {
 // returns back to the main screen
 function remakeMainScreen() {
 	startButton.addEventListener("click", handlesStartButton);
-	returnBackArrow.addEventListener("click", returnArrowEventListenerHandler);
+    settingsButton.addEventListener("click", handleSettingsButton)
+    returnBackArrow.addEventListener("click", returnArrowEventListenerHandler);
 }
 function musicPlayer() {
     const musicFolder = "../music/"; // Path to your music folder
