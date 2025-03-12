@@ -80,8 +80,12 @@ function musicPlayer() {
     const songs = ["audio1.mp3", "audio2.mp3", "audio3.mp3", "audio4.mp3"]; // Add your song files here
 
     // Function to get a random song index
-    function getRandomSongIndex() {
-        return Math.floor(Math.random() * songs.length);
+    function getRandomSongIndex(currentIndex) {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * songs.length);
+        } while (newIndex === currentIndex); // Ensure the new index is different from the current index
+        return newIndex;
     }
 
     // Create audio element but don't play yet
@@ -143,7 +147,7 @@ function musicPlayer() {
 
         if (hasStarted) {
             audio.pause();
-            currentSongIndex = getRandomSongIndex();
+            currentSongIndex = getRandomSongIndex(currentSongIndex); // Get a new song index, excluding the current one
             audio.src = musicFolder + songs[currentSongIndex];
             audio.play();
             isPlaying = true;
@@ -174,7 +178,7 @@ function musicPlayer() {
 
     // Automatically play a random next song when the current one ends
     audio.addEventListener("ended", () => {
-        currentSongIndex = getRandomSongIndex();
+        currentSongIndex = getRandomSongIndex(currentSongIndex); // Get a new song index, excluding the current one
         audio.src = musicFolder + songs[currentSongIndex];
         audio.play();
         isPlaying = true;
