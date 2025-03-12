@@ -20,7 +20,7 @@
 }
 
 .play-icon-text:hover::after{
-    content: "Pause";
+    content: var(--hover-text, "Pause");
     height: auto;
     width: auto;
     padding: 5%;

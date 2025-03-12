@@ -122,9 +122,16 @@ function musicPlayer() {
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
+                playButton.classList.add("fa-pause")
+                playButton.classList.remove("fa-play")
+                playButton.style.setProperty("--hover-text", '"Play"'); // Update hover text
             } else {
                 audio.play();
                 isPlaying = true;
+                playButton.classList.remove("fa-pause")
+                playButton.classList.add("fa-play")
+                playButton.style.setProperty("--hover-text", '"Pause"'); // Update hover text
+
             }
         }
         // Stop propagation to prevent the document click from triggering again
