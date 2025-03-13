@@ -26,7 +26,6 @@ export const screenPage = {
 };
 
 const startButton = document.getElementById("startButton");
-const settingsButton = document.getElementById("settingsButton");
 const helpButton = document.getElementById("helpButton");
 const returnBackArrow = document.getElementById("previously");
 let removeMainScreenElements = [];
